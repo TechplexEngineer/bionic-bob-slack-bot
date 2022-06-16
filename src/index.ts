@@ -10,6 +10,8 @@ Our index route, a simple hello world.
 import index from './routes/home'
 router.get("/", index)
 
+import slashEventChannel from './routes/slash_event-channel';
+router.post("/event", slashEventChannel)
 
 /*
 This is the last route we define, it will match anything that hasn't hit a route we've defined
