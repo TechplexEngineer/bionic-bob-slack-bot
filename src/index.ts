@@ -7,9 +7,8 @@ const router = Router();
 /*
 Our index route, a simple hello world.
 */
-router.get("/", () => {
-  return new Response("Hello, world! This is the root page of your Worker template.")
-})
+import index from './routes/home'
+router.get("/", index)
 
 
 /*
