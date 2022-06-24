@@ -4,10 +4,10 @@ const stub = COUNTER.get(id);
 
 // Note this is beforeAll, not beforeEach, yet each test still has isolated storage.
 // See https://v2.miniflare.dev/jest.html#isolated-storage for more details.
-beforeAll(async () => {
-  const storage = await getMiniflareDurableObjectStorage(id);
-  await storage.put("count", 5);
-});
+// beforeAll(async () => {
+//   const storage = await getMiniflareDurableObjectStorage(id);
+//   await storage.put("count", 5);
+// });
 
 test("should increment count", async () => {
   const res = await stub.fetch(new Request("http://localhost/increment"));
@@ -25,12 +25,12 @@ test("should get current count", async () => {
   expect(await res.text()).toContain("➡️ 5");
 });
 
-test("should default count to 0", async () => {
-  const storage = await getMiniflareDurableObjectStorage(id);
-  await storage.delete("count");
-  const res = await stub.fetch(new Request("http://localhost/"));
-  expect(await res.text()).toContain("➡️ 0");
-});
+// test("should default count to 0", async () => {
+//   const storage = await getMiniflareDurableObjectStorage(id);
+//   await storage.delete("count");
+//   const res = await stub.fetch(new Request("http://localhost/"));
+//   expect(await res.text()).toContain("➡️ 0");
+// });
 
 test("should return 404 on not found", async () => {
   const res = await stub.fetch("http://localhost/unknown");
