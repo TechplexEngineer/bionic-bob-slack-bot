@@ -1,6 +1,15 @@
-# Miniflare Example Project
+# Bionic Bob Slack Bot
 
-This is an example [Cloudflare Workers](https://workers.cloudflare.com/) project that uses [Miniflare](https://github.com/cloudflare/miniflare) for local development, [TypeScript](https://www.typescriptlang.org/), [esbuild](https://github.com/evanw/esbuild) for bundling, and [Jest](https://jestjs.io/) for testing, with [Miniflare's custom Jest environment](https://miniflare.dev/testing/jest).
+Slack bot whose goal is to:
+- provide helpful links
+- answer common questions
+- Automate manual processes
+
+
+
+
+This is based on the "Miniflare Example Project" and uses [Cloudflare Workers](https://workers.cloudflare.com/).
+[Miniflare](https://github.com/cloudflare/miniflare) is used for for local development, [TypeScript](https://www.typescriptlang.org/), [esbuild](https://github.com/evanw/esbuild) for bundling, and [Jest](https://jestjs.io/) for testing, with [Miniflare's custom Jest environment](https://miniflare.dev/testing/jest).
 
 ```shell
 # Install dependencies
