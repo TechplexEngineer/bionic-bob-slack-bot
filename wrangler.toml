@@ -16,3 +16,5 @@ command = "node build.js"
 kv_persist = true
 cache_persist = true
 
+[vars]
+# SLACK_BOT_TOKEN

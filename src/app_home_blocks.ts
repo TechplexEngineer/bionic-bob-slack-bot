@@ -1,5 +1,5 @@
-export default {
-	"blocks": [
+
+const blocks = [
 		{
 			"type": "header",
 			"text": {
@@ -23,7 +23,6 @@ export default {
 				},
 				"value": "click_me_123",
 				"url": "https://docs.team4909.org/home/",
-				"action_id": "button-action"
 			}
 		},
 		{
@@ -41,7 +40,6 @@ export default {
 				},
 				"value": "open_order_sheet",
 				"url": "https://docs.google.com/spreadsheets/d/1BGMXljo7L7N766PpeVszUuOC9rf_mTWG5kIJSzcwGbo/edit#gid=1432125071",
-				"action_id": "button-action"
 			}
 		},
 		{
@@ -59,8 +57,16 @@ export default {
 				},
 				"value": "open_build_calendar",
 				"url": "https://docs.google.com/spreadsheets/d/1bPFVPb-jnDz4s6Q-JSQdgSMTSXSyvz-zeSsYXMhwa-Q/edit#gid=0",
-				"action_id": "button-action"
 			}
 		}
-	]
-}
+	];
+export default {
+    type: 'home',
+    title: {
+    	type: 'plain_text',
+    	text: 'Team Quick Links'
+    },
+    blocks: blocks
+};
+
+

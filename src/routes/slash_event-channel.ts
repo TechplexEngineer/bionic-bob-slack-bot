@@ -35,7 +35,7 @@ export default async (request: Request) => {
 	const trigger = args[1];
 	const channel = args[2];
 
-	console.log(args)
+	// console.log(args)
 	// parsed = parser.parse_args(args)
 	// console.log(parsed);
 	// program.parse(args, { from: 'user' }); // from:user means first arg is not program name

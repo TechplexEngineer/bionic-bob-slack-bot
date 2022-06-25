@@ -1,3 +1,3 @@
-// interface Bindings {
-//   COUNTER: DurableObjectNamespace;
-// }
+interface Bindings {
+  SLACK_BOT_TOKEN: string;
+}
