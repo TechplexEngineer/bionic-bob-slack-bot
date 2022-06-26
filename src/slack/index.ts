@@ -1,4 +1,3 @@
-import '@sagi.io/globalthis';
 import merge from 'lodash.merge';
 
 export const METHODS: {[key: string]: {token: boolean}} = {
@@ -63,7 +62,7 @@ interface okObj {
   error: string
 }
 
-export const slackAPIRequest = (method: string, botAccessToken: string): ()=>Promise<okObj> => {
+export const slackAPIRequest = (method: string, botAccessToken: string): (formData:MyFormData)=>Promise<okObj> => {
   return async (formData:MyFormData = {}) => {
     if (!botAccessToken && METHODS[method].token && !formData['token']) {
       throw new Error(
@@ -96,15 +95,15 @@ export const slackAPIRequest = (method: string, botAccessToken: string): ()=>Pro
 }
 
 
-
-export const SlackREST = function (botAccessToken: string) {
+//name SlackREST
+export default function (botAccessToken: string) {
 
   const methodsObjArr: any = Object.keys(METHODS).map((method) => {
     const methodAPIRequest = slackAPIRequest(method, botAccessToken||"");
     return dotStringToObj(method, methodAPIRequest);
   });
 
-  const SlackAPI = merge(...methodsObjArr);
+  const SlackAPI = merge({}, methodsObjArr);
 
   return SlackAPI;
 };

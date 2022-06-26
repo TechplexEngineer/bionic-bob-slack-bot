@@ -24,8 +24,6 @@ Visit any page that doesn't exist (e.g. /foobar) to see it in action.
 */
 router.all("*", () => new Response("404, not found!", { status: 404 }));
 
-
-
 const worker: ExportedHandler<Bindings> = { fetch: router.handle };
 
 export default worker;

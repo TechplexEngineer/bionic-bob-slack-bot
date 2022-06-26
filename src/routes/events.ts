@@ -39,6 +39,8 @@ export interface Authorization {
 
 const apiUrl = 'https://slack.com/api';
 
+import {slackAPIRequest} from '../slack'
+
 
 export default async (request: Request, env: Bindings) => {
 	let event: IncommingCommon = await request.json();
@@ -52,22 +54,29 @@ export default async (request: Request, env: Bindings) => {
 
 			switch ((event as IncommingEventHook).event.type) {
 				case "app_home_opened":
-					// const view = JSON.stringify(appHomeBlocks, null, "\t");
+
 					const view = appHomeBlocks;
 					const args = {
 						// token: env.SLACK_BOT_TOKEN,
 						user_id: (event as IncommingEventHook).event.user,
-						view: view
+						view: JSON.stringify(view)
 					};
-					const body = JSON.stringify(args, null, "\t");
-					let res = await fetch(`${apiUrl}/views.publish`, {
-						headers: {
-							'Authorization': 'Bearer ' + env.SLACK_BOT_TOKEN,
-							'Content-Type': 'application/json; charset=utf-8',
-						},
-						method: "POST",
-						body: body
-					});
+
+					const viewsPublish = slackAPIRequest("views.publish", env.SLACK_BOT_TOKEN)
+					let res = await viewsPublish(args)
+					console.log(res);
+
+					// const view = JSON.stringify(appHomeBlocks, null, "\t");
+
+					// const body = JSON.stringify(args, null, "\t");
+					// let res = await fetch(`${apiUrl}/views.publish`, {
+					// 	headers: {
+					// 		'Authorization': 'Bearer ' + env.SLACK_BOT_TOKEN,
+					// 		'Content-Type': 'application/json; charset=utf-8',
+					// 	},
+					// 	method: "POST",
+					// 	body: body
+					// });
 
 					// console.log("Sending:", body);
 					// console.log("result:", await res.text());

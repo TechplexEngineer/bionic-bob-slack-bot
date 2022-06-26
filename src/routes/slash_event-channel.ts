@@ -1,24 +1,10 @@
 import qs from 'qs';
 import shlex from 'shlex';
-// import { ArgumentParser } from 'argparse';
-// import { program } from 'commander';
-
-
-// program
-// 	.command("add <based-on> <to-channel>")
-// 	.description('add users to a channel based on reactions')
-// 	.action(addAction);
-
-// const parser = new ArgumentParser({
-// 	description: 'Argparse example'
-// });
-
-// parser.add_argument("echo")
 
 const usage = "/event-channel add reactions #2022-summer-heat";
 
 // /event-channel add reactions #2022-summer-heat
-export default async (request: Request) => {
+export default async (request: Request, env: Bindings) => {
 
 	const body = await request.text();
 	const params = qs.parse(body);
