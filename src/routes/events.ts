@@ -40,50 +40,46 @@ export interface Authorization {
 const apiUrl = 'https://slack.com/api';
 
 
-export default function getEventsHandler(env: Bindings) {
+export default async (request: Request, env: Bindings) => {
+	let event: IncommingCommon = await request.json();
 
-	return async (request: Request) => {
-		let event: IncommingCommon = await request.json();
+	switch (event.type) {
+		case "url_verification":
+			return new Response((event as IncommingChallenge).challenge);
 
-		switch (event.type) {
-			case "url_verification":
-				return new Response((event as IncommingChallenge).challenge);
+		case "event_callback":
+			// @todo Verify the signing secret
 
-			case "event_callback":
-				// @todo Verify the signing secret
+			switch ((event as IncommingEventHook).event.type) {
+				case "app_home_opened":
+					// const view = JSON.stringify(appHomeBlocks, null, "\t");
+					const view = appHomeBlocks;
+					const args = {
+						// token: env.SLACK_BOT_TOKEN,
+						user_id: (event as IncommingEventHook).event.user,
+						view: view
+					};
+					const body = JSON.stringify(args, null, "\t");
+					let res = await fetch(`${apiUrl}/views.publish`, {
+						headers: {
+							'Authorization': 'Bearer ' + env.SLACK_BOT_TOKEN,
+							'Content-Type': 'application/json; charset=utf-8',
+						},
+						method: "POST",
+						body: body
+					});
 
-				switch ((event as IncommingEventHook).event.type) {
-					case "app_home_opened":
-						// const view = JSON.stringify(appHomeBlocks, null, "\t");
-						const view = appHomeBlocks;
-						const args =  {
-							// token: env.SLACK_BOT_TOKEN,
-							user_id: (event as IncommingEventHook).event.user,
-							view: view
-						};
-						const body = JSON.stringify(args, null, "\t");
-						let res = await fetch(`${apiUrl}/views.publish`, {
-							headers: {
-								'Authorization': 'Bearer ' + env.SLACK_BOT_TOKEN,
-								'Content-Type': 'application/json; charset=utf-8',
-							},
-							method: "POST",
-							body: body
-						});
+					// console.log("Sending:", body);
+					// console.log("result:", await res.text());
+					return new Response("");
 
-						// console.log("Sending:", body);
-						// console.log("result:", await res.text());
-						return new Response("");
+				default:
+					new Response(`Error: ${event.type}:${(event as IncommingEventHook).event.type} is unsupported`, { status: 400 })
+					break;
+			}
 
-					default:
-						new Response(`Error: ${event.type}:${(event as IncommingEventHook).event.type} is unsupported`, { status: 400 })
-						break;
-				}
-
-			default:
-				new Response(`Error: ${event.type} is unsupported`, { status: 400 })
-				break;
-		}
+		default:
+			new Response(`Error: ${event.type} is unsupported`, { status: 400 })
+			break;
 	}
-
 }

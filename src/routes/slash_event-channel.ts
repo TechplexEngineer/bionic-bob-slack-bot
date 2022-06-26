@@ -15,6 +15,8 @@ import shlex from 'shlex';
 
 // parser.add_argument("echo")
 
+const usage = "/event-channel add reactions #2022-summer-heat";
+
 // /event-channel add reactions #2022-summer-heat
 export default async (request: Request) => {
 
@@ -35,14 +37,28 @@ export default async (request: Request) => {
 	const trigger = args[1];
 	const channel = args[2];
 
-	// console.log(args)
+	console.log("/event-channel", args);
+	console.log("params", params);
+
+	switch (command) {
+		case "add":
+			switch (trigger) {
+				case "reactions":
+					// 1. join even if already in channel
+					// 2. retrieve message - optional
+					// 3. get reactions to message
+					// 4. add each user to channel
+					return new Response(`Adding Users who have reacted to the parent post to the channel ${channel}`);
+				default:
+					return new Response(`ERROR: ${usage}`);
+			}
+		default:
+			return new Response(`ERROR: ${usage}`);
+	}
+
+
 	// parsed = parser.parse_args(args)
 	// console.log(parsed);
 	// program.parse(args, { from: 'user' }); // from:user means first arg is not program name
-	return new Response("Response")
+	return new Response(`ERROR: ${usage}`);
 };
-
-// async function addAction(basedOn:string, toChannel:string) {
-// 	console.log("basedOn", basedOn, "toChannel", toChannel);
-
-// }
