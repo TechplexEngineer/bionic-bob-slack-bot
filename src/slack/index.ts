@@ -42,7 +42,7 @@ export const addTokenToFormData = (botAccessToken: string, formData: MyFormData)
   return Object.assign({}, formData, { token: botAccessToken });
 }
 
-export const dotStringToObj = (str: string, value: ()=>{}) => {
+export const dotStringToObj = (str: string, value: any) => {
   const obj:any = {};
   str.split('.').reduce((acc, v, i, arr) => {
     acc[v] = i + 1 === arr.length ? value : (acc[v] = {});
@@ -103,7 +103,8 @@ export default function (botAccessToken: string) {
     return dotStringToObj(method, methodAPIRequest);
   });
 
-  const SlackAPI = merge({}, methodsObjArr);
+  //@ts-ignore
+  const SlackAPI = merge(...methodsObjArr);
 
   return SlackAPI;
 };

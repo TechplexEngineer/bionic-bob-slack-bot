@@ -4,7 +4,7 @@ const blocks = [
 			"type": "header",
 			"text": {
 				"type": "plain_text",
-				"text": "Team Quick Links v2",
+				"text": "Team Quick Links v4",
 				"emoji": true
 			}
 		},
