@@ -47,7 +47,7 @@ export default async (request: Request, env: Bindings) => {
 			return new Response((event as IncommingChallenge).challenge);
 
 		case "event_callback":
-			// @todo Verify the signing secret
+			// @todo Verify the signing secret https://glitch.com/edit/#!/apphome-demo-note?path=verifySignature.js%3A1%3A0
 
 			switch ((event as IncommingEventHook).event.type) {
 				case "app_home_opened":

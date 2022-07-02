@@ -1,6 +1,6 @@
 import merge from 'lodash.merge';
 
-export const METHODS: {[key: string]: {token: boolean}} = {
+export const METHODS: { [key: string]: { token: boolean } } = {
   'im.open': { token: true },
   'auth.test': { token: true },
   'team.info': { token: true },
@@ -20,9 +20,9 @@ export const METHODS: {[key: string]: {token: boolean}} = {
   'conversations.open': { token: true },
   'conversations.replies': { token: true },
   'conversations.info': { token: true },
+  'conversations.invite': { token: true },
   'channels.list': { token: true },
   'channels.info': { token: true },
-  'reactions.add': { token: true },
   'apps.uninstall': { token: true },
   'chat.update': { token: true },
   'chat.postMessage': { token: true },
@@ -32,9 +32,13 @@ export const METHODS: {[key: string]: {token: boolean}} = {
   'views.push': { token: true },
   'views.update': { token: true },
   'team.billing.info': { token: true },
+  'reactions.add': { token: true },
+  'reactions.get': { token: true },
+  'reactions.list': { token: true },
+  'reactions.remove': { token: true },
 };
 
-interface MyFormData {[key: string]: string}
+interface MyFormData { [key: string]: string }
 
 export const getSlackAPIURL = (method: string) => `https://slack.com/api/${method}`;
 
@@ -43,7 +47,7 @@ export const addTokenToFormData = (botAccessToken: string, formData: MyFormData)
 }
 
 export const dotStringToObj = (str: string, value: any) => {
-  const obj:any = {};
+  const obj: any = {};
   str.split('.').reduce((acc, v, i, arr) => {
     acc[v] = i + 1 === arr.length ? value : (acc[v] = {});
     return acc[v];
@@ -62,8 +66,8 @@ interface okObj {
   error: string
 }
 
-export const slackAPIRequest = (method: string, botAccessToken: string): (formData:MyFormData)=>Promise<okObj> => {
-  return async (formData:MyFormData = {}) => {
+export const slackAPIRequest = (method: string, botAccessToken: string): (formData: MyFormData) => Promise<okObj> => {
+  return async (formData: MyFormData = {}) => {
     if (!botAccessToken && METHODS[method].token && !formData['token']) {
       throw new Error(
         `@sagi.io/workers-slack: Neither botAccessToken nor formData.token were provided. method: ${method}.`
@@ -81,11 +85,12 @@ export const slackAPIRequest = (method: string, botAccessToken: string): (formDa
     const options = { method: 'POST', body, headers };
 
     const postMsgRes = await fetch(url, options);
-    const postMsgResObj:okObj = await postMsgRes.json();
+    const postMsgResObj: okObj = await postMsgRes.json();
 
     const { ok } = postMsgResObj;
 
     if (!ok) {
+      console.log(postMsgResObj);
       const { error } = postMsgResObj;
       throw new Error(error);
     }
@@ -99,7 +104,7 @@ export const slackAPIRequest = (method: string, botAccessToken: string): (formDa
 export default function (botAccessToken: string) {
 
   const methodsObjArr: any = Object.keys(METHODS).map((method) => {
-    const methodAPIRequest = slackAPIRequest(method, botAccessToken||"");
+    const methodAPIRequest = slackAPIRequest(method, botAccessToken || "");
     return dotStringToObj(method, methodAPIRequest);
   });
 
