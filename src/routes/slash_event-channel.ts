@@ -83,13 +83,19 @@ export default async (request: Request, env: Bindings) => {
 					});
 					console.log("channels", channels.length);
 					let chanId = getChannel(channels.channels, channel.replace("#", ""))[0].id;
-					console.log(`${channel} -> ${chanId}`);
+					console.log(`Channel: ${channel} ChanID ${chanId}`);
 
 					// 4. add each user to channel
-					await Slack.conversations.invite({
-						channel: chanId,
-						users: usersToInvite.join(",")
-					});
+					try {
+						await Slack.conversations.invite({
+							channel: chanId,
+							users: usersToInvite.join(",")
+						});
+					} catch (e) {
+						if (e.message !== "already_in_channel") {
+							return new Response(`ERROR: ${e.message}`);
+						}
+					}
 
 					return new Response(`Adding Users ${usersToInvite.length} who have reacted to the parent post to the channel ${channel}`);
 				default:
