@@ -85,15 +85,13 @@ export default async (request: Request, env: Bindings) => {
 					let chanId = getChannel(channels.channels, channel.replace("#", ""))[0].id;
 					console.log(`${channel} -> ${chanId}`);
 
-					Slack.conversations.invite({
+					// 4. add each user to channel
+					await Slack.conversations.invite({
 						channel: chanId,
 						users: usersToInvite.join(",")
-					})
+					});
 
-
-					// 4. add each user to channel
-					// await Slack.conversations.invite({})
-					return new Response(`Adding Users who have reacted to the parent post to the channel ${channel}`);
+					return new Response(`Adding Users ${usersToInvite.length} who have reacted to the parent post to the channel ${channel}`);
 				default:
 					return new Response(`ERROR: ${usage}`);
 			}
