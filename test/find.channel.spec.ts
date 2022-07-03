@@ -1,4 +1,4 @@
-import { getChannel } from "@/routes/slash_event-channel";
+import { getChannel, GetUsersFromReactions, parseUrl } from "@/routes/slash_event-channel";
 
 const channels = {
     "ok": true,
@@ -93,8 +93,53 @@ const channels = {
     }
 };
 
-
-
 test("filter channels", () => {
     expect(getChannel(channels.channels, "2022-summer-heat")[0].id).toEqual("C03JB59PUER");
 });
+
+
+const reactions = [
+    {
+        name: 'robot_face',
+        users: [
+            '1', '2', '3'
+        ],
+        count: 3
+    }, {
+        name: 'thumbs_up',
+        users: [
+            '3', '4', '5', '6'
+        ],
+        count: 4
+    }
+];
+
+
+test("GetUsersFromReactions", () => {
+    expect(GetUsersFromReactions(reactions)).toEqual(['1', '2', '3', '4', '5', '6'])
+})
+
+
+describe("parseSlackUrl", () => {
+
+    const tests = [
+        {
+            name: "regular link",
+            input: "https://frc4909.slack.com/archives/C091KSAKY/p1654518591157789",
+            output: { channel: "C091KSAKY", timestamp: 1654518591.157789 }
+        },
+        {
+            //@todo not sure if this is correct
+            name: "thread link",
+            input: "https://frc4909.slack.com/archives/GB5PGSV52/p1656621372921909?thread_ts=1656372419.310829&cid=GB5PGSV52",
+            output: { channel: "GB5PGSV52", timestamp: 1656621372.921909 }
+        }
+    ];
+    for (const t of tests) {
+        test(t.name, () => {
+            expect(parseUrl(t.input)).toEqual(t.output);
+        });
+    }
+
+
+})

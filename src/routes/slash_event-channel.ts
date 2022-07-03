@@ -4,7 +4,7 @@ import SlackClient from '../slack'
 
 const usage = "/event-channel add reactions #2022-summer-heat https://frc4909.slack.com/archives/C091KSAKY/p1654467657881409";
 
-function parseUrl(slackUrl: string): {
+export function parseUrl(slackUrl: string): {
 	channel: string;
 	timestamp: number;
 } {
@@ -15,7 +15,7 @@ function parseUrl(slackUrl: string): {
 	}
 }
 
-function GetUsersFromReactions(reactions: [{ name: string, users: string[], count: number }]) {
+export function GetUsersFromReactions(reactions: { name: string, users: string[], count: number }[]) {
 	function onlyUnique<T>(value: T, index: number, self: Array<T>) {
 		return self.indexOf(value) === index;
 	}
