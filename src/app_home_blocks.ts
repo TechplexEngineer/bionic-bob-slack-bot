@@ -58,7 +58,26 @@ const blocks = [
 				"value": "open_build_calendar",
 				"url": "https://docs.google.com/spreadsheets/d/1bPFVPb-jnDz4s6Q-JSQdgSMTSXSyvz-zeSsYXMhwa-Q/edit#gid=0",
 			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*Monday.com*\n\n Used to organize and plan team work."
+			},
+			"accessory": {
+				"type": "button",
+				"text": {
+					"type": "plain_text",
+					"text": "Open monday.com",
+					"emoji": true
+				},
+				"value": "open_build_calendar",
+				"url": "https://team4909.monday.com/",
+			}
 		}
+	
+	
 	];
 export default {
     type: 'home',
