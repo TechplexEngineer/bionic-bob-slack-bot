@@ -4,7 +4,7 @@ const blocks = [
 			"type": "header",
 			"text": {
 				"type": "plain_text",
-				"text": "Team Quick Links v4",
+				"text": "Team Quick Links",
 				"emoji": true
 			}
 		},
@@ -63,7 +63,7 @@ const blocks = [
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "*Monday.com*\n\n Used to organize and plan team work."
+				"text": "*Monday<area>.com*\n\n Used to organize and plan team work."
 			},
 			"accessory": {
 				"type": "button",
