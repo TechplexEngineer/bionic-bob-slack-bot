@@ -81,9 +81,18 @@ export default async (request: Request, env: Bindings) => {
 						exclude_archived: true,
 						// types: "public_channel,private_channel" //scope needed = groups:read
 					});
-					console.log("channels", channels.length);
+					console.log("channels", channels.channels.length);
 					let chanId = getChannel(channels.channels, channel.replace("#", ""))[0].id;
 					console.log(`Channel: ${channel} ChanID ${chanId}`);
+
+					//3b. Join dest channel
+					try {
+						console.log("join dest channel", await Slack.conversations.join({ channel: linkedMessage.channel }));
+					} catch (e) {
+						if (e.message !== "already_in_channel") {
+							return new Response(`ERROR: ${e.message}`);
+						}
+					}
 
 					// 4. add each user to channel
 					try {
