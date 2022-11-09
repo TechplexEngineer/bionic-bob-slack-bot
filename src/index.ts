@@ -41,7 +41,12 @@ router.post("/interactive", async (req: Request, env: Bindings) => {
   switch (p?.type) {
     case "view_submission": // submitted a modal
       const selectedChannels = p.view.state.values.block.selected_channels.selected_conversations;
-      const linkedMessage: SlackMessage = JSON.parse(p.view.private_metadata)
+      const metadata = p.view.private_metadata;
+      if (metadata.length < 5) {
+        console.log("private_metadata is missing. Need the message (via private_metadata) to determine reactions");
+        return new Response();
+      }
+      const linkedMessage: SlackMessage = JSON.parse(metadata)
       for (const selectedChannel of selectedChannels) {
         await AddReactionsToChannel(Slack, linkedMessage, selectedChannel)
       }
@@ -60,7 +65,7 @@ router.post("/interactive", async (req: Request, env: Bindings) => {
 
         await Slack.views.open({
           trigger_id: p.trigger_id,
-          view: JSON.stringify(Channel_picker_modal)
+          view: JSON.stringify(clone)
         });
         return new Response();
 
