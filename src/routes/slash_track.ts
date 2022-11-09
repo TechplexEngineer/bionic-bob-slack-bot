@@ -56,7 +56,7 @@ const handleListTrackers = async (token) => {
 
     const msg = ["*Trackers:*"];
     for (const t of trackers.trackers) {
-        msg.push(`• Status: ${t.status} - Estimated delivery: ${t.est_delivery_date?t.est_delivery_date:"Unknown"} - <${t.public_url}|${t.tracking_code}>`);
+        msg.push(`• Status: ${t.status} - Estimated delivery: ${t.est_delivery_date ? t.est_delivery_date : "Unknown"} - <${t.public_url}|${t.tracking_code}>`);
     }
     return new Response(msg.join("\n"))
 }

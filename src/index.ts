@@ -1,5 +1,4 @@
-
-import { Router } from 'itty-router';
+import {Router} from 'itty-router';
 
 
 // routes
@@ -25,8 +24,8 @@ This is the last route we define, it will match anything that hasn't hit a route
 above, therefore it's useful as a 404 (and avoids us hitting worker exceptions, so make sure to include it!).
 Visit any page that doesn't exist (e.g. /foobar) to see it in action.
 */
-router.all("*", () => new Response("404, not found!", { status: 404 }));
+router.all("*", () => new Response("404, not found!", {status: 404}));
 
-const worker: ExportedHandler<Bindings> = { fetch: router.handle };
+const worker: ExportedHandler<Bindings> = {fetch: router.handle};
 
 export default worker;
