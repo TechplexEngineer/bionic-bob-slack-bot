@@ -4,7 +4,7 @@ import SlackClient from '../slack'
 
 const usage = "/track <trackingNumber> <carrier>";
 
-const createEasyPostTracker = async function(trackingNumber, carrier) {
+const createEasyPostTracker = async function(token, trackingNumber, carrier) {
 	const body = {
 		tracker: {
 			tracking_code: trackingNumber,
@@ -15,7 +15,7 @@ const createEasyPostTracker = async function(trackingNumber, carrier) {
 	return await fetch("https://api.easypost.com/v2/trackers", {
 		body: JSON.stringify(body),
 		headers: {
-		Authorization: "Basic JEVBU1lQT1NUX0FQSV9LRVk6",
+		Authorization: "Basic "+btoa(token),
 			"Content-Type": "application/json"
 		},
 		method: "POST"
@@ -34,6 +34,7 @@ export default async (request: Request, env: Bindings) => {
 	if (typeof text !== 'string') {
 		return new Response("Expected text to be a string, got: " + typeof text)
 	}
+	const slackChannelId = params['channel_id']
 
 	const args = shlex.split(text.trim());
 
@@ -44,9 +45,18 @@ export default async (request: Request, env: Bindings) => {
 	const trackingNumber = args[0];
 	const carrier = args[1];
 
-	const response = await createEasyPostTracker(trackingNumber, carrier);
+	const response = await createEasyPostTracker(env.EASYPOST_API_KEY, trackingNumber, carrier);
 	const respBody = await response.json();
 
-	return new Response(`Tracker Created for ${trackingNumber} via ${carrier}\n- Status: ${respBody.status}\n- Tracking URL: ${respBody.public_url}`)
+	console.log("body", JSON.stringify(respBody, null, 4))
+
+	if (respBody.hasOwnProperty('error')) {
+		return new Response(`Error creating tracker:\n${JSON.stringify(respBody, null, 4)}`)
+	}
+	const msg=`Tracker Created for ${trackingNumber} via ${carrier}\n- Status: ${respBody.status}\n- Tracking URL: ${respBody.public_url}`;
+
+	Slack.chat.postMessage({channel: slackChannelId, text: msg})
+
+	return new Response("Success");
 
 };
