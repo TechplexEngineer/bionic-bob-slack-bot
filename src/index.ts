@@ -18,6 +18,7 @@ const router = Router();
 router.get("/", index);
 router.post("/interactive", async (req: Request, env: Bindings) => {
   const reqBody = await req.text()
+  console.log("Raw Body", reqBody);
   const params = qs.parse(reqBody);
   const payloadStr = params?.payload
   if (typeof payloadStr === 'undefined') {
