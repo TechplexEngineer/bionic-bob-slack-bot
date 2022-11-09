@@ -19,3 +19,7 @@ cache_persist = true
 [vars]
 # SLACK_BOT_TOKEN
 # EASYPOST_API_KEY
+
+kv_namespaces = [
+    { binding = "BIONIC_BOB_TRACKING", id = "7b1c6c43503b4aa78dfba8cf0a18c0ad" }
+]

@@ -8,7 +8,7 @@ import slashTrack from './routes/slash_track';
 import webhookEasyPost from './routes/webhook_easypost';
 import eventsHandler from './routes/events';
 import interactive from './routes/interactive';
-
+import {trackingGet, trackingAddPost, trackingDeletePost} from './routes/web/tracking';
 
 const router = Router();
 
@@ -18,6 +18,10 @@ router.post("/command/event-channel", slashEventChannel);
 router.post("/command/track", slashTrack);
 router.post("/webhook/track", webhookEasyPost);
 router.post("/events", eventsHandler);
+
+router.get("/tracking", trackingGet)
+router.post("/tracking/add", trackingAddPost)
+router.delete("/tracking/delete", trackingDeletePost)
 
 /*
 This is the last route we define, it will match anything that hasn't hit a route we've defined
