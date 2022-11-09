@@ -3,7 +3,7 @@ import { Router } from 'itty-router';
 import qs from 'qs';
 import SlackClient from './slack'
 
-import Channel_picker_modal from "@/channel_picker_modal";
+import Channel_picker_modal, {ErrorModal} from "@/channel_picker_modal";
 
 // routes
 import index from './routes/home'
@@ -40,16 +40,30 @@ router.post("/interactive", async (req: Request, env: Bindings) => {
 
   switch (p?.type) {
     case "view_submission": // submitted a modal
-      const selectedChannels = p.view.state.values.block.selected_channels.selected_conversations;
-      const metadata = p.view.private_metadata;
-      if (metadata.length < 5) {
-        console.log("private_metadata is missing. Need the message (via private_metadata) to determine reactions");
-        return new Response();
+      if (p.view.callback_id == "channel_picker_modal") {
+        const selectedChannels = p.view.state.values.block.selected_channels.selected_conversations;
+        const metadata = p.view.private_metadata;
+        if (metadata.length < 5) {
+          console.log("private_metadata is missing. Need the message (via private_metadata) to determine reactions");
+          return new Response();
+        }
+        const linkedMessage: SlackMessage = JSON.parse(metadata)
+
+        try {
+          for (const selectedChannel of selectedChannels) {
+            await AddReactionsToChannel(Slack, linkedMessage, selectedChannel, true)
+          }
+        } catch (e) {
+          if (e.message == "method_not_supported_for_channel_type") {
+            await Slack.views.update({
+              view_id: p.view.id,
+              view: JSON.stringify(ErrorModal),
+            });
+            return new Response({response_action: 'update'})
+          }
+        }
       }
-      const linkedMessage: SlackMessage = JSON.parse(metadata)
-      for (const selectedChannel of selectedChannels) {
-        await AddReactionsToChannel(Slack, linkedMessage, selectedChannel)
-      }
+
 
       return new Response();
     case "message_action":  // performed action on message ie. shortcut

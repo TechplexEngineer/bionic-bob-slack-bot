@@ -1,0 +1,83 @@
+{
+    "type": "view_submission",
+    "team": {
+        "id": "T091KQ231",
+        "domain": "frc4909"
+    },
+    "user": {
+        "id": "U0C57J0D9",
+        "username": "techplex",
+        "name": "techplex",
+        "team_id": "T091KQ231"
+    },
+    "api_app_id": "A03KY7H6H44",
+    "token": "VSosHWvKXh2xFsxiSsMZ8r9P",
+    "trigger_id": "4359912336689.9053818103.e8c0f96de4cef4d4e4e4c486cd28ec7e",
+    "view": {
+        "id": "V049SMDRBEK",
+        "team_id": "T091KQ231",
+        "type": "modal",
+        "blocks": [
+            {
+                "type": "section",
+                "block_id": "block",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "Which channel(s) should the users be added to?",
+                    "verbatim": false
+                },
+                "accessory": {
+                    "type": "multi_conversations_select",
+                    "action_id": "selectedChannels",
+                    "placeholder": {
+                        "type": "plain_text",
+                        "text": "Select channel",
+                        "emoji": true
+                    },
+                    "filter": {
+                        "include": [
+                            "public"
+                        ]
+                    }
+                }
+            }
+        ],
+        "private_metadata": "",
+        "callback_id": "",
+        "state": {
+            "values": {
+                "block": {
+                    "multi_conversations_select-action": {
+                        "type": "multi_conversations_select",
+                        "selected_conversations": [
+                            "C03NGFJCZ8V"
+                        ]
+                    }
+                }
+            }
+        },
+        "hash": "1668011365.gAUp8ykB",
+        "title": {
+            "type": "plain_text",
+            "text": "Channel Picker",
+            "emoji": true
+        },
+        "clear_on_close": false,
+        "notify_on_close": false,
+        "close": null,
+        "submit": {
+            "type": "plain_text",
+            "text": "Submit",
+            "emoji": true
+        },
+        "previous_view_id": null,
+        "root_view_id": "V049SMDRBEK",
+        "app_id": "A03KY7H6H44",
+        "external_id": "",
+        "app_installed_team_id": "T091KQ231",
+        "bot_id": "B03KY8BTV6Y"
+    },
+    "response_urls": [],
+    "is_enterprise_install": false,
+    "enterprise": null
+}

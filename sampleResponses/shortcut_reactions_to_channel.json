@@ -1,0 +1,78 @@
+{
+    "type": "message_action",
+    "token": "VSosHWvKXh2xFsxiSsMZ8r9P",
+    "action_ts": "1668008454.756202",
+    "team":
+    {
+        "id": "T091KQ231",
+        "domain": "frc4909"
+    },
+    "user":
+    {
+        "id": "U0C57J0D9",
+        "username": "techplex",
+        "team_id": "T091KQ231",
+        "name": "techplex"
+    },
+    "channel":
+    {
+        "id": "C091KSAKY",
+        "name": "general"
+    },
+    "is_enterprise_install": false,
+    "enterprise": null,
+    "callback_id": "reactions_to_channel",
+    "trigger_id": "4343969597333.9053818103.b69f43cefd7b3a4c5b2ea2153f9c4f94",
+    "response_url": "https://hooks.slack.com/app/T091KQ231/4370615120704/DG8pwun9GWPCPp3LmtMtveUZ",
+    "message_ts": "1667867135.729329",
+    "message":
+    {
+        "client_msg_id": "2eaed344-35cd-41e7-9440-f3fc96d8b6de",
+        "type": "message",
+        "text": "<!everyone> If you don’t know about the calendar raffle by now, MESSAGE ME ASAP! We are selling tickets at both Market Basket locations in Billerica this Saturday, Nov. 12th. Please fill out this <https://docs.google.com/forms/d/e/1FAIpQLSdeKs6Ja_EZuX0tNLRIS_UQLrruDMZ5XZTbPZPu1I4IANA9og/viewform|form> (also posted in Google Classroom) to sign up for a time slot. More information about selling at O’Conners will be announced soon. *All team members are required to participate.*",
+        "user": "UP1PTADQE",
+        "ts": "1667867135.729329",
+        "blocks":
+        [
+            {
+                "type": "rich_text",
+                "block_id": "D3XeT",
+                "elements":
+                [
+                    {
+                        "type": "rich_text_section",
+                        "elements":
+                        [
+                            {
+                                "type": "broadcast",
+                                "range": "everyone"
+                            },
+                            {
+                                "type": "text",
+                                "text": " If you don’t know about the calendar raffle by now, MESSAGE ME ASAP! We are selling tickets at both Market Basket locations in Billerica this Saturday, Nov. 12th. Please fill out this "
+                            },
+                            {
+                                "type": "link",
+                                "url": "https://docs.google.com/forms/d/e/1FAIpQLSdeKs6Ja_EZuX0tNLRIS_UQLrruDMZ5XZTbPZPu1I4IANA9og/viewform",
+                                "text": "form"
+                            },
+                            {
+                                "type": "text",
+                                "text": " (also posted in Google Classroom) to sign up for a time slot. More information about selling at O’Conners will be announced soon. "
+                            },
+                            {
+                                "type": "text",
+                                "text": "All team members are required to participate.",
+                                "style":
+                                {
+                                    "bold": true
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "team": "T091KQ231"
+    }
+}

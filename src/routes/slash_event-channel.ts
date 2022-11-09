@@ -34,7 +34,7 @@ export function getChannel(channels: { name: string, [key: string]: any }[], cha
 }
 
 //destChannel can be either #channelName or channelId
-export async function AddReactionsToChannel(Slack, linkedMessage: SlackMessage, destChannel: string): Promise<Response> {
+export async function AddReactionsToChannel(Slack, linkedMessage: SlackMessage, destChannel: string, allowThrow=false): Promise<Response> {
 	// 1. join even if already in channel
 	console.log(`Join Channel - ${linkedMessage.channel}`);
 	console.log(await Slack.conversations.join({ channel: linkedMessage.channel }));
@@ -67,6 +67,7 @@ export async function AddReactionsToChannel(Slack, linkedMessage: SlackMessage, 
 	try {
 		console.log("join dest channel", await Slack.conversations.join({ channel: chanId }));
 	} catch (e) {
+		if (e.message == "method_not_supported_for_channel_type" && allowThrow)
 		if (e.message !== "already_in_channel") {
 			return new Response(`ERROR: ${e.message}`);
 		}
@@ -80,7 +81,7 @@ export async function AddReactionsToChannel(Slack, linkedMessage: SlackMessage, 
 		});
 	} catch (e) {
 		if (e.message !== "already_in_channel") {
-			console.log(`Unable ot execute invites: ${e.message}`);
+			console.log(`Unable to send invites: ${e.message}`);
 			return new Response(`ERROR: ${e.message}`);
 		}
 	}
