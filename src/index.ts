@@ -6,6 +6,7 @@ import qs from 'qs';
 import index from './routes/home'
 import slashEventChannel from './routes/slash_event-channel';
 import slashTrack from './routes/slash_track';
+import webhookEasyPost from './routes/webhook_easypost';
 import eventsHandler from './routes/events';
 
 
@@ -17,6 +18,7 @@ router.get("/interactive", async (req: Request) => {
 });
 router.post("/command/event-channel", slashEventChannel);
 router.post("/command/track", slashTrack);
+router.post("/webhook/track", webhookEasyPost);
 router.post("/events", eventsHandler);
 
 /*

@@ -20,7 +20,9 @@ const createEasyPostTracker = async function(token, trackingNumber, carrier) {
 		},
 		method: "POST"
 	});
-}
+};
+
+const SlackTrackingChannelId = "C0326RUSSKB";
 
 
 export default async (request: Request, env: Bindings) => {
@@ -34,7 +36,7 @@ export default async (request: Request, env: Bindings) => {
 	if (typeof text !== 'string') {
 		return new Response("Expected text to be a string, got: " + typeof text)
 	}
-	const slackChannelId = params['channel_id']
+	const slackChannelId = SlackTrackingChannelId; //params['channel_id']
 
 	const args = shlex.split(text.trim());
 
