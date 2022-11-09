@@ -46,7 +46,7 @@ export default async (request: Request, env: Bindings) => {
 	const args = shlex.split(text.trim());
 
 	if (args.length !== 4) {
-		return new Response("Three args are required. Received: " + JSON.stringify(args))
+		return new Response("Four args are required. Received: " + JSON.stringify(args))
 	}
 
 	const command = args[0];

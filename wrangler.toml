@@ -18,3 +18,4 @@ cache_persist = true
 
 [vars]
 # SLACK_BOT_TOKEN
+# EASYPOST_API_KEY

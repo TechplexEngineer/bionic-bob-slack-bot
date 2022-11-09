@@ -5,6 +5,7 @@ import qs from 'qs';
 // routes
 import index from './routes/home'
 import slashEventChannel from './routes/slash_event-channel';
+import slashTrack from './routes/slash_track';
 import eventsHandler from './routes/events';
 
 
@@ -15,6 +16,7 @@ router.get("/interactive", async (req: Request) => {
   return new Response("");
 });
 router.post("/command/event-channel", slashEventChannel);
+router.post("/command/track", slashTrack);
 router.post("/events", eventsHandler);
 
 /*
