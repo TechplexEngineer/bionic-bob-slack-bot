@@ -42,7 +42,7 @@ router.post("/interactive", async (req: Request, env: Bindings) => {
 
     await Slack.views.open({
       trigger_id: p.trigger_id,
-      view: Channel_picker_modal
+      view: JSON.stringify(Channel_picker_modal)
     });
     return new Response();
 
