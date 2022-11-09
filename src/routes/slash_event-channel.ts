@@ -4,10 +4,12 @@ import SlackClient from '../slack'
 
 const usage = "/event-channel add reactions #2022-summer-heat https://frc4909.slack.com/archives/C091KSAKY/p1654467657881409";
 
-export function parseUrl(slackUrl: string): {
+export interface SlackMessage {
 	channel: string;
 	timestamp: number;
-} {
+}
+
+export function parseUrl(slackUrl: string): SlackMessage {
 	const parts = slackUrl.split("/")
 	return {
 		channel: parts[parts.length - 2],
@@ -29,6 +31,55 @@ export function getChannel(channels: { name: string, [key: string]: any }[], cha
 	return channels.filter((c) => {
 		return c.name == channel;
 	})
+}
+
+export async function AddReactionsToChannel(Slack, linkedMessage: SlackMessage, destChannel: string): Promise<Response> {
+	// 1. join even if already in channel
+	console.log(`Join Channel - ${linkedMessage.channel}`);
+	console.log(await Slack.conversations.join({ channel: linkedMessage.channel }));
+
+	// 2. retrieve message - optional
+	// 3. get reactions to message
+	console.log(`Get reactions - ${linkedMessage.channel}:${linkedMessage.timestamp}`);
+	let reactions = await Slack.reactions.get({
+		channel: linkedMessage.channel,
+		timestamp: linkedMessage.timestamp
+	});
+	const usersToInvite = GetUsersFromReactions(reactions.message.reactions);
+	console.log("users", usersToInvite);
+
+	// 3a. Convert channel name to channel id
+	console.log(`List Channels`);
+	let channels = await Slack.conversations.list({
+		exclude_archived: true,
+		// types: "public_channel,private_channel" //scope needed = groups:read
+	});
+	console.log("channels", channels.channels.length);
+	let chanId = getChannel(channels.channels, destChannel.replace("#", ""))[0].id;
+	console.log(`Channel: ${destChannel} ChanID ${chanId}`);
+
+	//3b. Join dest channel
+	try {
+		console.log("join dest channel", await Slack.conversations.join({ channel: linkedMessage.channel }));
+	} catch (e) {
+		if (e.message !== "already_in_channel") {
+			return new Response(`ERROR: ${e.message}`);
+		}
+	}
+
+	// 4. add each user to channel
+	try {
+		await Slack.conversations.invite({
+			channel: chanId,
+			users: usersToInvite.join(",")
+		});
+	} catch (e) {
+		if (e.message !== "already_in_channel") {
+			return new Response(`ERROR: ${e.message}`);
+		}
+	}
+
+	return new Response(`Adding Users ${usersToInvite.length} who have reacted to the parent post to the channel ${channel}`);
 }
 
 // /event-channel add reactions #2022-summer-heat https://frc4909.slack.com/archives/C091KSAKY/p1654467657881409
@@ -63,50 +114,7 @@ export default async (request: Request, env: Bindings) => {
 				case "reactions":
 
 					const linkedMessage = parseUrl(link);
-					// 1. join even if already in channel
-					console.log(`Join Channel - ${linkedMessage.channel}`);
-					console.log(await Slack.conversations.join({ channel: linkedMessage.channel }));
-					// 2. retrieve message - optional
-					// 3. get reactions to message
-					console.log(`Get reactions - ${linkedMessage.channel}:${linkedMessage.timestamp}`);
-					let reactions = await Slack.reactions.get({
-						channel: linkedMessage.channel,
-						timestamp: linkedMessage.timestamp
-					});
-					const usersToInvite = GetUsersFromReactions(reactions.message.reactions);
-					console.log("users", usersToInvite);
-					// 3a. Convert channel name to channel id
-					console.log(`List Channels`);
-					let channels = await Slack.conversations.list({
-						exclude_archived: true,
-						// types: "public_channel,private_channel" //scope needed = groups:read
-					});
-					console.log("channels", channels.channels.length);
-					let chanId = getChannel(channels.channels, channel.replace("#", ""))[0].id;
-					console.log(`Channel: ${channel} ChanID ${chanId}`);
-
-					//3b. Join dest channel
-					try {
-						console.log("join dest channel", await Slack.conversations.join({ channel: linkedMessage.channel }));
-					} catch (e) {
-						if (e.message !== "already_in_channel") {
-							return new Response(`ERROR: ${e.message}`);
-						}
-					}
-
-					// 4. add each user to channel
-					try {
-						await Slack.conversations.invite({
-							channel: chanId,
-							users: usersToInvite.join(",")
-						});
-					} catch (e) {
-						if (e.message !== "already_in_channel") {
-							return new Response(`ERROR: ${e.message}`);
-						}
-					}
-
-					return new Response(`Adding Users ${usersToInvite.length} who have reacted to the parent post to the channel ${channel}`);
+					return await AddReactionsToChannel(Slack, linkedMessage, channel)
 				default:
 					return new Response(`ERROR: ${usage}`);
 			}
