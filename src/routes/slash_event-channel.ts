@@ -33,6 +33,7 @@ export function getChannel(channels: { name: string, [key: string]: any }[], cha
 	})
 }
 
+//destChannel can be either #channelName or channelId
 export async function AddReactionsToChannel(Slack, linkedMessage: SlackMessage, destChannel: string): Promise<Response> {
 	// 1. join even if already in channel
 	console.log(`Join Channel - ${linkedMessage.channel}`);
@@ -48,14 +49,18 @@ export async function AddReactionsToChannel(Slack, linkedMessage: SlackMessage, 
 	const usersToInvite = GetUsersFromReactions(reactions.message.reactions);
 	console.log("users", usersToInvite);
 
-	// 3a. Convert channel name to channel id
-	console.log(`List Channels`);
-	let channels = await Slack.conversations.list({
-		exclude_archived: true,
-		// types: "public_channel,private_channel" //scope needed = groups:read
-	});
-	console.log("channels", channels.channels.length);
-	let chanId = getChannel(channels.channels, destChannel.replace("#", ""))[0].id;
+	let chanId =  destChannel;
+	if (destChannel.startsWith("#")) {
+		// 3a. Convert channel name to channel id
+		console.log(`List Channels`);
+		let channels = await Slack.conversations.list({
+			exclude_archived: true,
+			// types: "public_channel,private_channel" //scope needed = groups:read
+		});
+		console.log("channels", channels.channels.length);
+		chanId = getChannel(channels.channels, destChannel.replace("#", ""))[0].id;
+	}
+	
 	console.log(`Channel: ${destChannel} ChanID ${chanId}`);
 
 	//3b. Join dest channel
