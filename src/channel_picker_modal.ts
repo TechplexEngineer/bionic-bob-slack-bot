@@ -22,7 +22,7 @@ export default {
 					"text": "Select channel",
 					"emoji": true
 				},
-				"action_id": "selected-channels",
+				"action_id": "selected_channels",
 				"filter": {
 					"include": [
 						"public"

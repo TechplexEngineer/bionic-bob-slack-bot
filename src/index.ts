@@ -36,11 +36,11 @@ router.post("/interactive", async (req: Request, env: Bindings) => {
   const Slack = SlackClient(env.SLACK_BOT_TOKEN);
 
   const p = JSON.parse(payloadStr)
-  console.log("Raw Payload", JSON.stringify(p, null, 4));
+  console.log("Raw Payload", p);
 
   switch (p?.type) {
     case "view_submission": // submitted a modal
-      const selectedChannels = p.view.state.values.block.selectedChannels.selected_conversations;
+      const selectedChannels = p.view.state.values.block.selected_channels.selected_conversations;
       const linkedMessage: SlackMessage = JSON.parse(p.view.private_metadata)
       for (const selectedChannel of selectedChannels) {
         await AddReactionsToChannel(Slack, linkedMessage, selectedChannel)
