@@ -13,9 +13,9 @@ import eventsHandler from './routes/events';
 const router = Router();
 
 router.get("/", index);
-router.get("/interactive", async (req: Request) => {
+router.post("/interactive", async (req: Request) => {
   console.log(await req.text())
-  return new Response("");
+  return new Response("{}");
 });
 router.post("/command/event-channel", slashEventChannel);
 router.post("/command/track", slashTrack);
