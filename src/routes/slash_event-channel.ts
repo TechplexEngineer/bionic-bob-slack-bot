@@ -49,7 +49,7 @@ export async function AddReactionsToChannel(Slack, linkedMessage: SlackMessage, 
 	const usersToInvite = GetUsersFromReactions(reactions.message.reactions);
 	console.log("users", usersToInvite);
 
-	let chanId =  destChannel;
+	let chanId = destChannel;
 	if (destChannel.startsWith("#")) {
 		// 3a. Convert channel name to channel id
 		console.log(`List Channels`);
@@ -60,12 +60,12 @@ export async function AddReactionsToChannel(Slack, linkedMessage: SlackMessage, 
 		console.log("channels", channels.channels.length);
 		chanId = getChannel(channels.channels, destChannel.replace("#", ""))[0].id;
 	}
-	
+
 	console.log(`Channel: ${destChannel} ChanID ${chanId}`);
 
 	//3b. Join dest channel
 	try {
-		console.log("join dest channel", await Slack.conversations.join({ channel: linkedMessage.channel }));
+		console.log("join dest channel", await Slack.conversations.join({ channel: chanId }));
 	} catch (e) {
 		if (e.message !== "already_in_channel") {
 			return new Response(`ERROR: ${e.message}`);
@@ -80,11 +80,12 @@ export async function AddReactionsToChannel(Slack, linkedMessage: SlackMessage, 
 		});
 	} catch (e) {
 		if (e.message !== "already_in_channel") {
+			console.log(`Unable ot execute invites: ${e.message}`);
 			return new Response(`ERROR: ${e.message}`);
 		}
 	}
 
-	return new Response(`Adding Users ${usersToInvite.length} who have reacted to the parent post to the channel ${channel}`);
+	return new Response(`Adding Users ${usersToInvite.length} who have reacted to the parent post to the channel ${destChannel}`);
 }
 
 // /event-channel add reactions #2022-summer-heat https://frc4909.slack.com/archives/C091KSAKY/p1654467657881409
