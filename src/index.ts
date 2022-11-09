@@ -18,7 +18,6 @@ const router = Router();
 router.get("/", index);
 router.post("/interactive", async (req: Request, env: Bindings) => {
   const reqBody = await req.text()
-  console.log("Raw Body", reqBody);
   const params = qs.parse(reqBody);
   const payloadStr = params?.payload
   if (typeof payloadStr === 'undefined') {
@@ -34,23 +33,43 @@ router.post("/interactive", async (req: Request, env: Bindings) => {
     return new Response("");
   }
 
+  const Slack = SlackClient(env.SLACK_BOT_TOKEN);
+
   const p = JSON.parse(payloadStr)
+  console.log("Raw Payload", JSON.stringify(p, null, 4));
+
+  switch (p?.type) {
+    case "view_submission": // submitted a modal
+      const selectedChannels = p.view.state.values.block.selectedChannels.selected_conversations;
+      const linkedMessage: SlackMessage = JSON.parse(p.view.private_metadata)
+      for (const selectedChannel of selectedChannels) {
+        await AddReactionsToChannel(Slack, linkedMessage, selectedChannel)
+      }
+
+      return new Response();
+    case "message_action":  // performed action on message ie. shortcut
+      if (p.callback_id == "reactions_to_channel") {
+
+        const linkedMessage: SlackMessage = {
+          channel: p.channel.id,
+          timestamp: p.message_ts
+        }
+
+        const clone = Object.assign({}, Channel_picker_modal)
+        clone.private_metadata = JSON.stringify(linkedMessage)
+
+        await Slack.views.open({
+          trigger_id: p.trigger_id,
+          view: JSON.stringify(Channel_picker_modal)
+        });
+        return new Response();
 
 
-  if (p.callback_id == "reactions_to_channel") {
-    const Slack = SlackClient(env.SLACK_BOT_TOKEN);
-
-    await Slack.views.open({
-      trigger_id: p.trigger_id,
-      view: JSON.stringify(Channel_picker_modal)
-    });
-    return new Response();
-
-    // const linkedMessage:SlackMessage = {
-    //   channel: p.
-    // }
-    // return await AddReactionsToChannel(Slack, )
+      }
   }
+
+
+
 
 
   return new Response("{}");
