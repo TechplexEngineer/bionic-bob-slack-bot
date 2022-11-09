@@ -44,8 +44,8 @@ export default async (request: Request, env: Bindings) => {
 	const carrier = args[1];
 
 	const response = await createEasyPostTracker(trackingNumber, carrier);
-	const body = await response.json();
+	const respBody = await response.json();
 
-	return new Response(`Tracker Created for ${trackingNumber} via ${carrier}\n- Status: ${body.status}\n- Tracking URL: ${public_url}`)
+	return new Response(`Tracker Created for ${trackingNumber} via ${carrier}\n- Status: ${respBody.status}\n- Tracking URL: ${respBody.public_url}`)
 
 };
