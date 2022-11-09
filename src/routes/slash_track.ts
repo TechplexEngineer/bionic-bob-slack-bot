@@ -1,5 +1,6 @@
 import qs from 'qs';
 import shlex from 'shlex';
+import SlackClient from '../slack'
 
 const usage = "/track <trackingNumber> <carrier>";
 
