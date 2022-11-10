@@ -1,6 +1,7 @@
 import {EasyPost} from "@/easypost";
 import SlackClient from '@/slack'
 import {EasyPostWebhook} from "@/easypost/WebhookResponse";
+import {EasyPostErrorResponse} from "@/easypost/TrackerCreateResponse";
 
 export interface constructorProps {
     kv: KVNamespace
@@ -61,12 +62,40 @@ export class TrackingService {
         }
     }
 
-    addTracking() {
+    async addTracking(opt: { name?: string, tracking: string, carrier: string }): Promise<{ ok: boolean, error?: string }> {
+        console.log("addTracking");
+        const res = await this.ep.Tracker.create(opt.tracking, opt.carrier)
+        if (res.hasOwnProperty("error")) {
+            return {
+                ok: false,
+                error: JSON.stringify((res as EasyPostErrorResponse).error)
+            }
+        } else {
+            console.log("Tracker Created", res);
+        }
 
+        const data: bionicBobTrackingKV = {
+            name: opt.name,
+            tracking: opt.tracking,
+            carrier: opt.carrier,
+            added: new Date(),
+            isDeleted: false
+        };
+        await this.kv.put(opt.tracking, JSON.stringify(data), {metadata: data});
+        console.log("kvCreated");
+        return {ok: true} //@todo can we do better checking?
     }
 
-    hideTracking() {
+    async hideTracking(opt: { tracking: string }): Promise<void> {
+        const entryStr = await this.kv.get(opt.tracking)
+        let entry: bionicBobTrackingKV = {} as bionicBobTrackingKV;
+        if (entryStr !== null) {
+            entry = JSON.parse<bionicBobTrackingKV>(entryStr)
+        }
+        entry.isDeleted = true;
 
+        await this.kv.put(opt.tracking, JSON.stringify(entry), {metadata: entry})
+        return
     }
 
     async listTracking(options: { includeDeleted?: boolean } = {}): Promise<bionicBobTrackingKV[]> {
@@ -78,6 +107,7 @@ export class TrackingService {
             const trackers = res.trackers.filter(value => value.tracking_code == k.name);
             if (trackers.length == 0 || !trackers[0]) {
                 console.log(`ERROR: Tracker not found for kv entry ${k.name}`);
+                this.kv.delete(k.name);
                 return;
             }
             const t = trackers[0];

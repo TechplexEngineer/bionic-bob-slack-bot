@@ -39,7 +39,26 @@ export const trackingGet = async (request: Request, env: Bindings) => {
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.2/css/bootstrap.min.css" integrity="sha512-CpIKUSyh9QX2+zSdfGP+eWLx23C8Dj9/XmHjZY2uDtfkdLGo0uY12jgcnkX9vXOgYajEKb/jiw67EYm+kBf+6g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<script>
 	
-	    document.addEventListener("DOMContentLoaded", function(event) { 
+	    document.addEventListener("DOMContentLoaded", function(event) {
+            
+            const params = new URLSearchParams(window.location.search)
+            console.log(params.get("success"), params.get("message"));
+            if (params.get("success") !== null) {
+                const $alert = document.querySelector('.js-alert');
+                if (params.get("success") === "true") {
+                    console.log("success");
+                    $alert.classList.add("alert-success")
+                    $alert.innerHTML = params.get("message") || "Tracker Created"
+                } else {
+                    console.log("error");
+                    $alert.classList.add("alert-danger")
+                    $alert.innerHTML = params.get("message") || "Error: Unable to create tracker."
+                }
+                $alert.classList.remove("d-none")
+            }
+            
+            
+            
             document.querySelectorAll(".js-delete").forEach((value)=>{
                 value.addEventListener('click', async function (event){                   
                     event.preventDefault();
@@ -67,6 +86,9 @@ export const trackingGet = async (request: Request, env: Bindings) => {
 <body>
     <div class="container">
         <h1>${title}</h1>
+        
+        <div class="alert d-none js-alert" role="alert">
+        </div>
         
         <h2 class="pt-4">Packages</h2>
         <table class="table table-striped">
@@ -193,29 +215,26 @@ export const trackingGet = async (request: Request, env: Bindings) => {
 
 export const trackingAddPost = async (request: Request, env: Bindings) => {
     const body = await request.formData();
-    const carrier = body.get("carrier") as string;
+    const name = (body.get("name") as string).trim();
+    const tracking = (body.get("tracking") as string).trim();
+    const carrier = (body.get("carrier") as string).trim();
 
     if (carrier == null || carrier == -1) {
         return new Response("ERROR: Carrier not selected. Tracker not created.")
     }
 
-    const ep = new EasyPost(env.EASYPOST_API_KEY);
+    const ts = new TrackingService({
+        kv: env.BIONIC_BOB_TRACKING,
+        easypostAPIKey: env.EASYPOST_API_KEY,
+        slackApiKey: env.SLACK_BOT_TOKEN
+    });
 
-    await ep.Tracker.create(body.get("tracking") as string, carrier)
+    let res = await ts.addTracking({name, tracking, carrier});
 
-
-    const data: bionicBobTrackingKV = {
-        name: body.get("name") as string,
-        tracking: body.get("tracking") as string,
-        carrier: carrier,
-        added: new Date(),
-        isDeleted: false
-    };
-    await env.BIONIC_BOB_TRACKING.put((body.get("tracking") as string).trim(), JSON.stringify(data), {metadata: data})
-
-    return new Response("Tracker Created")
-
-    // return Response.redirect(request.headers.get('origin')+"/tracking", 303); //303 is "see other", switches request to GET
+    if (res.ok) {
+        return Response.redirect(request.headers.get('origin') + "/tracking?success=true&message=tracker%20created", 303); //303 is "see other", switches request to GET
+    }
+    return Response.redirect(request.headers.get('origin') + `/tracking?success=false&message=${encodeURIComponent("error: " + res.error || "unknown")}`, 303); //303 is "see other", switches request to GET
 }
 
 interface deleteRequestBody {
@@ -224,16 +243,16 @@ interface deleteRequestBody {
 
 export const trackingDeletePost = async (request: Request, env: Bindings) => {
     const body = await request.json<deleteRequestBody>();
-    // console.log(body);
 
-    const entryStr = await env.BIONIC_BOB_TRACKING.get(body.tracking)
-    let entry: bionicBobTrackingKV = {} as bionicBobTrackingKV;
-    if (entryStr !== null) {
-        entry = JSON.parse<bionicBobTrackingKV>(entryStr)
-    }
-    entry.isDeleted = true;
+    const ts = new TrackingService({
+        kv: env.BIONIC_BOB_TRACKING,
+        easypostAPIKey: env.EASYPOST_API_KEY,
+        slackApiKey: env.SLACK_BOT_TOKEN
+    });
 
-    await env.BIONIC_BOB_TRACKING.put(body.tracking, JSON.stringify(entry), {metadata: entry})
+    await ts.hideTracking({
+        tracking: body.tracking
+    });
 
     return new Response(JSON.stringify({
         msg: "deleted",

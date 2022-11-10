@@ -71,10 +71,15 @@ export interface Tracker {
     is_return?: boolean;
 }
 
-
-export interface EasyPostTrackerCreateResponse extends Tracker {
-
+export type EasyPostErrorResponse = {
+    error: {
+        code: string //"TRACKER.CREATE.ERROR",
+        message: string //"A duplicate request is currently in-flight",
+        errors: any[]
+    }
 }
+
+export type EasyPostTrackerCreateResponse = Tracker | EasyPostErrorResponse
 
 
 
