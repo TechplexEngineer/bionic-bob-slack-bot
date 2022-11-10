@@ -79,7 +79,7 @@ export type EasyPostErrorResponse = {
     }
 }
 
-export type EasyPostTrackerCreateResponse = Tracker | EasyPostErrorResponse
+export type EasyPostTrackerCreateResponse = Tracker // | EasyPostErrorResponse
 
 
 

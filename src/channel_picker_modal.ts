@@ -32,7 +32,8 @@ export default {
             }
         }
     ],
-    "type": "modal"
+    "type": "modal",
+    private_metadata: ""
 };
 
 

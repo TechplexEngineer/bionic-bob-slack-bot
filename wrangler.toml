@@ -8,6 +8,9 @@ workers_dev = true
 compatibility_date = "2022-05-28"
 compatibility_flags = []
 
+kv_namespaces = [
+    { binding = "BIONIC_BOB_TRACKING", id = "7b1c6c43503b4aa78dfba8cf0a18c0ad" }
+]
 
 [build]
 command = "node build.js"
@@ -20,6 +23,4 @@ cache_persist = true
 # SLACK_BOT_TOKEN
 # EASYPOST_API_KEY
 
-kv_namespaces = [
-    { binding = "BIONIC_BOB_TRACKING", id = "7b1c6c43503b4aa78dfba8cf0a18c0ad" }
-]
+

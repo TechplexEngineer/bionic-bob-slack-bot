@@ -30,7 +30,7 @@ export class TrackingService {
 
     private ep: EasyPost;
     private kv: KVNamespace;
-    private slack: SlackClient;
+    public readonly slack: SlackClient;
 
 
     constructor({kv, easypostAPIKey, slackApiKey}: constructorProps) {
@@ -62,7 +62,7 @@ export class TrackingService {
         }
     }
 
-    async addTracking(opt: { name?: string, tracking: string, carrier: string }): Promise<{ ok: boolean, error?: string }> {
+    async addTracking(opt: { name?: string, tracking: string, carrier: string }): Promise<{ ok: boolean, error?: string, data?: bionicBobTrackingKV }> {
         console.log("addTracking");
         const res = await this.ep.Tracker.create(opt.tracking, opt.carrier)
         if (res.hasOwnProperty("error")) {
@@ -79,11 +79,14 @@ export class TrackingService {
             tracking: opt.tracking,
             carrier: opt.carrier,
             added: new Date(),
-            isDeleted: false
+            isDeleted: false,
+            status: res.status,
+            url: res.public_url,
+            estDeliveryDate: res.est_delivery_date
         };
         await this.kv.put(opt.tracking, JSON.stringify(data), {metadata: data});
         console.log("kvCreated");
-        return {ok: true} //@todo can we do better checking?
+        return {ok: true, data: data} //@todo can we do better error checking?
     }
 
     async hideTracking(opt: { tracking: string }): Promise<void> {
@@ -102,7 +105,7 @@ export class TrackingService {
         const res = await this.ep.Tracker.list()
         const kvList = await this.kv.list<bionicBobTrackingKV>();
 
-        const rows = kvList.keys.filter(value => options.includeDeleted || !value.metadata.isDeleted);
+        const rows = kvList.keys.filter(value => options.includeDeleted || !value.metadata?.isDeleted);
         return rows.map(k => {
             const trackers = res.trackers.filter(value => value.tracking_code == k.name);
             if (trackers.length == 0 || !trackers[0]) {

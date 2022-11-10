@@ -208,9 +208,36 @@ export interface SlackAPIMethods {
     },
     views: {
         publish(): Promise<okObj>,
-        open(): Promise<okObj>,
+        // Open a view for a user.
+        // https://api.slack.com/methods/views.open
+        open(options: {
+            // A view object. This must be a JSON-encoded string.
+            // see https://api.slack.com/reference/surfaces/views
+            view: string,
+        } & Pick<{
+            // Exchange a trigger to post to the user.
+            trigger_id: string
+        }, {
+            // Exchange an interactivity pointer to post to the user.
+            interactivity_pointer: string
+        }>): Promise<okObj>,
         push(): Promise<okObj>,
-        update(): Promise<okObj>,
+
+        // Update an existing view.
+        // https://api.slack.com/methods/views.update
+        update(options: {
+            // A view object. This must be a JSON-encoded string.
+            // see https://api.slack.com/reference/surfaces/views
+            view: string,
+            // A string that represents view state to protect against possible race conditions.
+            hash?: string
+        } & Pick<{
+            // A unique identifier of the view set by the developer. Must be unique for all views on a team. Max length of 255 characters. Either view_id or external_id is required.
+            external_id: string
+        }, {
+            // A unique identifier of the view to be updated. Either view_id or external_id is required.
+            view_id: string
+        }>): Promise<okObj>,
     },
     reactions: {
         add(): Promise<okObj>,

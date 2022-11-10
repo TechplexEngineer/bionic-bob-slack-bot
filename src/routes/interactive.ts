@@ -2,6 +2,7 @@ import qs from 'qs';
 import SlackClient from '@/slack'
 
 import Channel_picker_modal, {ErrorModal} from "@/channel_picker_modal";
+import {AddReactionsToChannel, SlackMessage} from "@/routes/slash_event-channel";
 
 export default async (req: Request, env: Bindings) => {
     const reqBody = await req.text()
@@ -46,7 +47,7 @@ export default async (req: Request, env: Bindings) => {
                             view_id: p.view.id,
                             view: JSON.stringify(ErrorModal),
                         });
-                        return new Response({response_action: 'update'})
+                        return new Response(JSON.stringify({response_action: 'update'}))
                     }
                 }
             }

@@ -1,69 +1,37 @@
 import qs from 'qs';
 import shlex from 'shlex';
-import SlackClient from '../slack'
+import {TrackingService} from "@/service/tracking_service";
 
 const usage = [
     "Manage package tracking",
     "",
     "Usage:",
-    "- `/track <trackingNumber> <carrier>` Add a new package to be tracked and updates sent to the #tracking channel",
+    "- `/track <trackingNumber> <carrier> <name>` Add a new package to be tracked and updates sent to the #tracking channel",
     "- `/track help` Print this help message",
     "- `/track list` Get a list of packages being tracked",
 ].join("\n");
 
-const createEasyPostTracker = async function (token, trackingNumber, carrier) {
-    const body = {
-        tracker: {
-            tracking_code: trackingNumber,
-            carrier: carrier
-        }
-    }
-
-    return await fetch("https://api.easypost.com/v2/trackers", {
-        method: "POST",
-        body: JSON.stringify(body),
-        headers: {
-            Authorization: "Basic " + btoa(token),
-            "Content-Type": "application/json"
-        },
-    });
-};
 
 const SlackTrackingChannelId = "C0326RUSSKB";
 
-interface EasyPostTracker {
-    tracking_code: string
-    status: string
-    status_detail: string
-    est_delivery_date: string
-    public_url: string
-}
 
-interface EasyPostTrackersResponse {
-    trackers: EasyPostTracker[]
-}
-
-const handleListTrackers = async (token) => {
-    const response = await fetch("https://api.easypost.com/v2/trackers", {
-        method: "GET",
-        headers: {
-            Authorization: "Basic " + btoa(token),
-            "Content-Type": "application/json"
-        },
-    });
-
-    const trackers = await response.json<EasyPostTrackersResponse>();
+const handleListTrackers = async (ts: TrackingService) => {
+    const trackers = await ts.listTracking();
 
     const msg = ["*Trackers:*"];
-    for (const t of trackers.trackers) {
-        msg.push(`• Status: ${t.status} - Estimated delivery: ${t.est_delivery_date ? t.est_delivery_date : "Unknown"} - <${t.public_url}|${t.tracking_code}>`);
+    for (const t of trackers) {
+        msg.push(`• *${t.name}* Status: ${t.status} - Estimated delivery: ${t.estDeliveryDate ? t.estDeliveryDate : "Unknown"} - <${t.url}|${t.tracking}>`);
     }
     return new Response(msg.join("\n"))
 }
 
 export default async (request: Request, env: Bindings) => {
 
-    const Slack = SlackClient(env.SLACK_BOT_TOKEN);
+    const ts = new TrackingService({
+        kv: env.BIONIC_BOB_TRACKING,
+        easypostAPIKey: env.EASYPOST_API_KEY,
+        slackApiKey: env.SLACK_BOT_TOKEN
+    });
 
     // https://api.slack.com/interactivity/slash-commands
     const body = await request.text();
@@ -81,27 +49,26 @@ export default async (request: Request, env: Bindings) => {
     }
 
     if (args.length == 1 && args[0].toLowerCase() == 'list') {
-        return handleListTrackers(env.EASYPOST_API_KEY)
+        return handleListTrackers(ts)
     }
 
-    if (args.length !== 2) {
+    if (args.length !== 3) {
         return new Response("Three args are required. Received: " + JSON.stringify(args))
     }
 
-    const trackingNumber = args[0];
+    const tracking = args[0];
     const carrier = args[1];
+    const name = args[2];
 
-    const response = await createEasyPostTracker(env.EASYPOST_API_KEY, trackingNumber, carrier);
-    const respBody = await response.json();
+    const res = await ts.addTracking({name, carrier, tracking})
 
-    console.log("body", JSON.stringify(respBody, null, 4))
-
-    if (respBody.hasOwnProperty('error')) {
-        return new Response(`Error creating tracker:\n${JSON.stringify(respBody, null, 4)}`)
+    if (!res.ok) {
+        return new Response(`Error creating tracker:\n${res.error}`)
     }
-    const msg = `Tracker Created for ${trackingNumber} via ${carrier}\n- Status: ${respBody.status}\n- Tracking URL: ${respBody.public_url}`;
 
-    Slack.chat.postMessage({channel: slackChannelId, text: msg})
+    const msg = `*Tracker Created*\n• *${res.data.name}* Status: ${res.data.status} - Estimated delivery: ${res.data.estDeliveryDate ? res.data.estDeliveryDate : "Unknown"} - <${res.data.url}|${res.data.tracking}>`;
+
+    await ts.slack.chat.postMessage({channel: slackChannelId, text: msg})
 
     return new Response("Success");
 
