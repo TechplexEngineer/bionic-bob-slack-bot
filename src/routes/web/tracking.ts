@@ -18,6 +18,11 @@ export const trackingGet = async (request: Request, env: Bindings) => {
         const trackers = res.trackers.filter(value => value.tracking_code==k.name);
         const t = trackers[0]
 
+        if (!t) {
+            console.log(`Unable to find tracker for ${k.name}`);
+            return '';
+        }
+
         return `<tr data-tracking="${t.tracking_code}">
     <td>${k.metadata.name || ""}</td>
     <td>${t.status}</td>
@@ -95,11 +100,12 @@ export const trackingGet = async (request: Request, env: Bindings) => {
                 </div>
                 <div class="mb-3 col-4">
                     <label for="trackingNumberField" class="form-label">Tracking Number</label>
-                    <input type="text" class="form-control" id="trackingNumberField" name="tracking">
+                    <input type="text" class="form-control" id="trackingNumberField" name="tracking" required>
                 </div>
                 <div class="mb-3 col-4">
                     <label for="carrierField" class="form-label">Carrier</label>
-                    <select class="form-control" id="carrierField" name="carrier">
+                    <select class="form-control" id="carrierField" name="carrier" required>
+                        <option disabled selected hidden>-- Choose a carrier --</option>
                         <optgroup label="Common">
                             <option value="USPS">USPS</option>
                             <option value="FedEx">FedEx</option>
