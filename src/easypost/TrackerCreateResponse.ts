@@ -64,9 +64,11 @@ export interface Tracker {
     shipment_id?: any;
     carrier: string;
     tracking_details: TrackingDetail[];
-    fees: Fee[];
+    fees?: Fee[];
     carrier_detail: CarrierDetail;
     public_url: string;
+    finalized?: boolean;
+    is_return?: boolean;
 }
 
 

@@ -1,29 +1,18 @@
 import SlackClient from '../slack'
-
-const SlackTrackingChannelId = "C0326RUSSKB";
+import {TrackingService} from "@/service/tracking_service";
+import {EasyPostWebhook} from "@/easypost/WebhookResponse";
 
 export default async (request: Request, env: Bindings) => {
 
-    const r = await request.json();
+    const ts = new TrackingService({
+        kv: env.BIONIC_BOB_TRACKING,
+        easypostAPIKey: env.EASYPOST_API_KEY,
+        slackApiKey: env.SLACK_BOT_TOKEN
+    });
 
-    const action = r.description;
-    const trackingCode = r.result.tracking_code;
-    const status = r.result.status;
-    const estDeliveryDate = r.result.est_delivery_date;
-    const trackingUrl = r.result.public_url;
+    const r = await request.json<EasyPostWebhook>();
 
-    const msgParts = [
-        `Action: ${action}`,
-        `- Tracking Number: ${trackingCode}`,
-        `- Status: ${status}`,
-        `- Est Delivery: ${estDeliveryDate}`,
-        `- Tracking: ${trackingUrl}`
-    ];
-
-    const msg = msgParts.join('\n')
-
-    const Slack = SlackClient(env.SLACK_BOT_TOKEN);
-    Slack.chat.postMessage({channel: SlackTrackingChannelId, text: msg})
+    ts.handleTrackingWebhook({easyPostWebhook: r})
 
     return new Response("");
 };

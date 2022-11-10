@@ -1,5 +1,5 @@
 import qs from 'qs';
-import SlackClient from '../slack'
+import SlackClient from '@/slack'
 
 import Channel_picker_modal, {ErrorModal} from "@/channel_picker_modal";
 

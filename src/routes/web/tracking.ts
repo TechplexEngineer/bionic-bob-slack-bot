@@ -1,41 +1,35 @@
 import {EasyPost} from "@/easypost";
 import qs from 'qs';
+import {bionicBobTrackingKV, TrackingService} from "@/service/tracking_service";
 
 export const trackingGet = async (request: Request, env: Bindings) => {
 
-    // console.log();
-
-    const ep = new EasyPost(env.EASYPOST_API_KEY);
-
-    const res = await ep.Tracker.list()
-
-    const kvList = await env.BIONIC_BOB_TRACKING.list();
-    console.log(JSON.stringify(kvList, null, 4));
-
+    const ts = new TrackingService({
+        kv: env.BIONIC_BOB_TRACKING,
+        easypostAPIKey: env.EASYPOST_API_KEY,
+        slackApiKey: env.SLACK_BOT_TOKEN
+    });
 
     const title = "Bionic Bob's - Package Tracking Dashboard";
-    const rows = kvList.keys.filter(value => !value.metadata.isDeleted).map(k=>{
-        const trackers = res.trackers.filter(value => value.tracking_code==k.name);
-        const t = trackers[0]
 
-        if (!t) {
-            console.log(`Unable to find tracker for ${k.name}`);
-            return '';
-        }
+    const rows = (await ts.listTracking()).map(t => {
 
-        return `<tr data-tracking="${t.tracking_code}">
-    <td>${k.metadata.name || ""}</td>
+
+        return `<tr data-tracking="${t.tracking}">
+    <td>${t.name || ""}</td>
     <td>${t.status}</td>
-    <td>${t.est_delivery_date || "unknown"}</td>
+    <td>${t.estDeliveryDate || "unknown"}</td>
     <td>
-        <a href="${t.public_url}" target="_blank">${t.tracking_code}</a>
+        <a href="${t.url}" target="_blank">${t.tracking}</a>
     </td>
     <td>${t.carrier}</td>
     <td>
-        <button class="btn btn-danger js-delete" data-tracking="${t.tracking_code}">Delete</button>
+        <button class="btn btn-danger js-delete" data-tracking="${t.tracking}">Delete</button>
     </td>
 </tr>`
     }).join("\n");
+
+
     const tpl = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -74,7 +68,7 @@ export const trackingGet = async (request: Request, env: Bindings) => {
     <div class="container">
         <h1>${title}</h1>
         
-        <h2>Packages</h2>
+        <h2 class="pt-4">Packages</h2>
         <table class="table table-striped">
         <thead>
             <tr>
@@ -91,7 +85,7 @@ export const trackingGet = async (request: Request, env: Bindings) => {
         </tbody>
         </table>
         
-        <h2>Add a Package to track</h2>
+        <h2 class="pt-4">Add a Package to track</h2>
         <form action="/tracking/add" method="post">
             <div class="row">
                 <div class="mb-3 col-4">
@@ -190,24 +184,17 @@ export const trackingGet = async (request: Request, env: Bindings) => {
 </body>
 </html>`;
     return new Response(tpl, {
-    headers: {
-      'content-type': 'text/html;charset=UTF-8',
-    },
-  });
+        headers: {
+            'content-type': 'text/html;charset=UTF-8',
+        },
+    });
 }
 
-export interface bionicBobTrackingKV {
-    name: string
-    tracking: string
-    carrier: string
-    added: Date
-    isDeleted: boolean
-}
 
 export const trackingAddPost = async (request: Request, env: Bindings) => {
     const body = await request.formData();
     const carrier = body.get("carrier") as string;
-    
+
     if (carrier == null || carrier == -1) {
         return new Response("ERROR: Carrier not selected. Tracker not created.")
     }
@@ -215,7 +202,6 @@ export const trackingAddPost = async (request: Request, env: Bindings) => {
     const ep = new EasyPost(env.EASYPOST_API_KEY);
 
     await ep.Tracker.create(body.get("tracking") as string, carrier)
-
 
 
     const data: bionicBobTrackingKV = {
@@ -241,7 +227,7 @@ export const trackingDeletePost = async (request: Request, env: Bindings) => {
     // console.log(body);
 
     const entryStr = await env.BIONIC_BOB_TRACKING.get(body.tracking)
-    let entry:bionicBobTrackingKV = {} as bionicBobTrackingKV;
+    let entry: bionicBobTrackingKV = {} as bionicBobTrackingKV;
     if (entryStr !== null) {
         entry = JSON.parse<bionicBobTrackingKV>(entryStr)
     }
