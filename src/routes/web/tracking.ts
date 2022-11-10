@@ -105,7 +105,7 @@ export const trackingGet = async (request: Request, env: Bindings) => {
                 <div class="mb-3 col-4">
                     <label for="carrierField" class="form-label">Carrier</label>
                     <select class="form-control" id="carrierField" name="carrier" required>
-                        <option disabled selected hidden>-- Choose a carrier --</option>
+                        <option disabled selected hidden value="-1">-- Choose a carrier --</option>
                         <optgroup label="Common">
                             <option value="USPS">USPS</option>
                             <option value="FedEx">FedEx</option>
@@ -206,15 +206,22 @@ export interface bionicBobTrackingKV {
 
 export const trackingAddPost = async (request: Request, env: Bindings) => {
     const body = await request.formData();
+    const carrier = body.get("carrier") as string;
+    
+    if (carrier == null || carrier == -1) {
+        return new Response("ERROR: Carrier not selected. Tracker not created.")
+    }
 
     const ep = new EasyPost(env.EASYPOST_API_KEY);
 
-    await ep.Tracker.create(body.get("tracking") as string, body.get("carrier") as string)
+    await ep.Tracker.create(body.get("tracking") as string, carrier)
+
+
 
     const data: bionicBobTrackingKV = {
         name: body.get("name") as string,
         tracking: body.get("tracking") as string,
-        carrier: body.get("carrier") as string,
+        carrier: carrier,
         added: new Date(),
         isDeleted: false
     };
