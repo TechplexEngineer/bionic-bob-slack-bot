@@ -1,7 +1,16 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "types": ["@cloudflare/workers-types", "jest", "../bindings"]
+    "types": [
+      "@cloudflare/workers-types",
+      "jest",
+      "../bindings"
+    ]
   },
-  "include": ["../src/**/*", "**/*"]
+  "include": [
+    "../src/**/*",
+    "**/*",
+    "../bindings.d.ts",
+    "../node_modules/@types/node/globals.global.d.ts"
+  ]
 }

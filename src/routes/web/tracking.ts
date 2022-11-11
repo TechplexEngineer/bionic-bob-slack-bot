@@ -219,7 +219,7 @@ export const trackingAddPost = async (request: Request, env: Bindings) => {
     const tracking = (body.get("tracking") as string).trim();
     const carrier = (body.get("carrier") as string).trim();
 
-    if (carrier == null || carrier == -1) {
+    if (carrier == null || carrier == "-1") {
         return new Response("ERROR: Carrier not selected. Tracker not created.")
     }
 

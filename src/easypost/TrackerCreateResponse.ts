@@ -72,7 +72,7 @@ export interface Tracker {
 }
 
 export type EasyPostErrorResponse = {
-    error: {
+    error?: {
         code: string //"TRACKER.CREATE.ERROR",
         message: string //"A duplicate request is currently in-flight",
         errors: any[]

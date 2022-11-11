@@ -1,6 +1,6 @@
 import qs from 'qs';
 import shlex from 'shlex';
-import {TrackingService} from "@/service/tracking_service";
+import {bionicBobTrackingKV, TrackingService} from "@/service/tracking_service";
 
 const usage = [
     "Manage package tracking",
@@ -14,13 +14,17 @@ const usage = [
 
 const SlackTrackingChannelId = "C0326RUSSKB";
 
+export const formatTrackingSlackMessage = (t: bionicBobTrackingKV) => {
+    return `• *${t.name}* Status: ${t.status} - Estimated delivery: ${t.estDeliveryDate ? t.estDeliveryDate : "Unknown"} - <${t.url}|${t.tracking}>`
+}
+
 
 const handleListTrackers = async (ts: TrackingService) => {
     const trackers = await ts.listTracking();
 
     const msg = ["*Trackers:*"];
     for (const t of trackers) {
-        msg.push(`• *${t.name}* Status: ${t.status} - Estimated delivery: ${t.estDeliveryDate ? t.estDeliveryDate : "Unknown"} - <${t.url}|${t.tracking}>`);
+        msg.push(formatTrackingSlackMessage(t));
     }
     return new Response(msg.join("\n"))
 }
@@ -66,10 +70,10 @@ export default async (request: Request, env: Bindings) => {
         return new Response(`Error creating tracker:\n${res.error}`)
     }
 
-    const msg = `*Tracker Created*\n• *${res.data.name}* Status: ${res.data.status} - Estimated delivery: ${res.data.estDeliveryDate ? res.data.estDeliveryDate : "Unknown"} - <${res.data.url}|${res.data.tracking}>`;
+    const msg = "*Tracker Created*\n" + formatTrackingSlackMessage(res.data)
 
     await ts.slack.chat.postMessage({channel: slackChannelId, text: msg})
 
-    return new Response("Success");
+    return new Response("Success: Tracker Created");
 
 };

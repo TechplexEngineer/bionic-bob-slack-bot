@@ -2,8 +2,8 @@ import {Router} from 'itty-router';
 
 
 // routes
-import index from './routes/home'
-import slashEventChannel, {AddReactionsToChannel, SlackMessage} from './routes/slash_event-channel';
+import home from './routes/home'
+import slashEventChannel from './routes/slash_event-channel';
 import slashTrack from './routes/slash_track';
 import webhookEasyPost from './routes/webhook_easypost';
 import eventsHandler from './routes/events';
@@ -12,7 +12,7 @@ import {trackingGet, trackingAddPost, trackingDeletePost} from './routes/web/tra
 
 const router = Router();
 
-router.get("/", index);
+router.get("/", home);
 router.post("/interactive", interactive);
 router.post("/command/event-channel", slashEventChannel);
 router.post("/command/track", slashTrack);

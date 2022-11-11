@@ -1,16 +1,16 @@
 import appHomeBlocks from '../app_home_blocks';
-import SlackREST, {slackAPIRequest} from '../slack'
+import SlackClient from '../slack'
 
-export interface IncommingCommon {
+export interface IncomingCommon {
     type: string
 }
 
-export interface IncommingChallenge extends IncommingCommon {
+export interface IncomingChallenge extends IncomingCommon {
     token: string
     challenge: string
 }
 
-export interface IncommingEventHook extends IncommingCommon {
+export interface IncomingEventHook extends IncomingCommon {
     token: string
     team_id: string
     api_app_id: string
@@ -39,30 +39,29 @@ export interface Authorization {
 
 
 export default async (request: Request, env: Bindings) => {
-    let event: IncommingCommon = await request.json();
+    let event: IncomingCommon = await request.json();
 
     switch (event.type) {
         case "url_verification":
-            return new Response((event as IncommingChallenge).challenge);
+            return new Response((event as IncomingChallenge).challenge);
 
         case "event_callback":
             // @todo Verify the signing secret https://glitch.com/edit/#!/apphome-demo-note?path=verifySignature.js%3A1%3A0
 
-            switch ((event as IncommingEventHook).event.type) {
+            switch ((event as IncomingEventHook).event.type) {
                 case "app_home_opened":
 
-                    const view = appHomeBlocks;
-                    const args = {
-                        user_id: (event as IncommingEventHook).event.user,
-                        view: JSON.stringify(view)
-                    };
+                    const Slack = SlackClient(env.SLACK_BOT_TOKEN)
 
-                    await slackAPIRequest("views.publish", env.SLACK_BOT_TOKEN)(args)
+                    await Slack.views.publish({
+                        user_id: (event as IncomingEventHook).event.user,
+                        view: JSON.stringify(appHomeBlocks)
+                    })
 
                     return new Response("");
 
                 default:
-                    new Response(`Error: ${event.type}:${(event as IncommingEventHook).event.type} is unsupported`, {status: 400})
+                    new Response(`Error: ${event.type}:${(event as IncomingEventHook).event.type} is unsupported`, {status: 400})
                     break;
             }
             break;

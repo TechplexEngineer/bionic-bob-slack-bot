@@ -12,7 +12,7 @@ export default async (request: Request, env: Bindings) => {
 
     const r = await request.json<EasyPostWebhook>();
 
-    ts.handleTrackingWebhook({easyPostWebhook: r})
+    await ts.handleTrackingWebhook({easyPostWebhook: r})
 
     return new Response("");
 };
