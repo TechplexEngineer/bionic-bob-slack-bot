@@ -45,7 +45,7 @@ export class TrackingService {
         const trackingCode = r.result.tracking_code;
         const status = r.result.status;
         const estDeliveryDate = r.result.est_delivery_date;
-        // const trackingUrl = r.result.public_url;
+        const trackingUrl = r.result.public_url;
 
         const kvEntry = await this.kv.getWithMetadata<bionicBobTrackingKV>(trackingCode);
         if (kvEntry.metadata == null) {
@@ -59,12 +59,15 @@ export class TrackingService {
 
         const data: bionicBobTrackingKV = Object.assign(kvEntry.metadata, {
             status: status,
-            estDeliveryDate: estDeliveryDate
+            estDeliveryDate: estDeliveryDate,
+            url: trackingUrl
         } as bionicBobTrackingKV);
+
+        await this.kv.put(trackingCode, JSON.stringify(data), {metadata: data})
 
         const latestUpdate = r.result.tracking_details.pop()
 
-        const msg = '*Tracking Update*\n' + formatTrackingSlackMessage(data) + `\n${latestUpdate.description}`;
+        const msg = '*Tracking Update*\n' + formatTrackingSlackMessage(data) + `\n\t${latestUpdate.description}`;
 
         const res = await this.slack.chat.postMessage({channel: SlackTrackingChannelId, text: msg})
         if (!res.ok) {

@@ -15,7 +15,16 @@ const usage = [
 const SlackTrackingChannelId = "C0326RUSSKB";
 
 export const formatTrackingSlackMessage = (t: bionicBobTrackingKV) => {
-    return `• *${t.name}* Status: ${t.status} - Estimated delivery: ${t.estDeliveryDate ? t.estDeliveryDate : "Unknown"} - <${t.url}|${t.tracking}>`
+    let deliveryDate = t.estDeliveryDate;
+    if (deliveryDate) {
+        deliveryDate = new Date(deliveryDate).toLocaleString('en-us', {
+            year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric"
+        })
+    } else {
+        deliveryDate = "Unknown"
+    }
+
+    return `• *${t.name}* Status: ${t.status} - Estimated delivery: ${deliveryDate} - <${t.url}|${t.tracking}>`
 }
 
 
