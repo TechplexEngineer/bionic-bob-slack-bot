@@ -9,19 +9,34 @@ import webhookEasyPost from './routes/webhook_easypost';
 import eventsHandler from './routes/events';
 import interactive from './routes/interactive';
 import {trackingGet, trackingAddPost, trackingDeletePost} from './routes/web/tracking';
+import webhookOnshape from '@/routes/onshape/webhook'
 
 const router = Router();
 
 router.get("/", home);
+
+// Slack
 router.post("/interactive", interactive);
-router.post("/command/event-channel", slashEventChannel);
-router.post("/command/track", slashTrack);
-router.post("/webhook/track", webhookEasyPost);
 router.post("/events", eventsHandler);
 
+// slack slash commands
+router.post("/command/event-channel", slashEventChannel);
+router.post("/command/track", slashTrack);
+
+//easy post webhook
+router.post("/webhook/track", webhookEasyPost);
+
+//web interface
 router.get("/tracking", trackingGet)
 router.post("/tracking/add", trackingAddPost)
 router.delete("/tracking/delete", trackingDeletePost)
+
+// Onshape
+router.post("/webhook/onshape", webhookOnshape);
+router.post("/command/onshape", async (request: Request, env: Bindings) => {
+    // future slack slash command
+    return new Response("")
+});
 
 /*
 This is the last route we define, it will match anything that hasn't hit a route we've defined

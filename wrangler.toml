@@ -22,5 +22,6 @@ cache_persist = true
 [vars]
 # SLACK_BOT_TOKEN
 # EASYPOST_API_KEY
-
+# ONSHAPE_SECRET_KEY
+# ONSHAPE_ACCESS_KEY
 

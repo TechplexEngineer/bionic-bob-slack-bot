@@ -1,0 +1,36 @@
+{
+  "description": "tracker.created",
+  "mode": "production",
+  "previous_attributes": {},
+  "created_at": "2022-11-09T13:54:43.000Z",
+  "pending_urls": [
+    "https://hook.us1.make.com/ccu7grde159svah7cq8oweun3yl0zu1j",
+    "https://webhook.site/6406b7bd-5e2e-406f-99d6-010dc0732267"
+  ],
+  "completed_urls": [],
+  "updated_at": "2022-11-09T13:54:43.000Z",
+  "id": "evt_0fc9c158603611ed970b49952f2f2bda",
+  "user_id": "user_6d874a790bd047bc80d4f4c82166e203",
+  "status": "pending",
+  "object": "Event",
+  "result": {
+    "id": "trk_9485843e65a041d99315e9e87141f01a",
+    "object": "Tracker",
+    "mode": "production",
+    "tracking_code": "1ZYE2382039952111",
+    "status": "unknown",
+    "status_detail": "unknown",
+    "created_at": "2022-11-09T13:54:12Z",
+    "updated_at": "2022-11-09T13:54:12Z",
+    "signed_by": null,
+    "weight": null,
+    "est_delivery_date": null,
+    "shipment_id": null,
+    "carrier": "UPS",
+    "tracking_details": [],
+    "carrier_detail": null,
+    "finalized": false,
+    "is_return": false,
+    "public_url": "https://track.easypost.com/djE6dHJrXzk0ODU4NDNlNjVhMDQxZDk5MzE1ZTllODcxNDFmMDFh"
+  }
+}

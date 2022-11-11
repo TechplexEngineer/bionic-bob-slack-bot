@@ -1,0 +1,278 @@
+{
+  "description": "tracker.updated",
+  "mode": "production",
+  "previous_attributes": {
+    "status": "in_transit"
+  },
+  "created_at": "2022-11-11T12:40:55.000Z",
+  "pending_urls": [
+    "https://bionic-bob.techplex.workers.dev/webhook/track"
+  ],
+  "completed_urls": [],
+  "updated_at": "2022-11-11T12:40:55.000Z",
+  "id": "evt_159f47cc61be11ed8c2d0dae5fa5cf4b",
+  "user_id": "user_6d874a790bd047bc80d4f4c82166e203",
+  "status": "pending",
+  "object": "Event",
+  "result": {
+    "id": "trk_8ff8694941984a5593bd199abb18c409",
+    "object": "Tracker",
+    "mode": "production",
+    "tracking_code": "92612901755477300008954194",
+    "status": "in_transit",
+    "status_detail": "arrived_at_facility",
+    "created_at": "2022-11-09T18:56:26Z",
+    "updated_at": "2022-11-11T12:39:55Z",
+    "signed_by": null,
+    "weight": null,
+    "est_delivery_date": "2022-11-12T00:00:00Z",
+    "shipment_id": null,
+    "carrier": "USPS",
+    "tracking_details": [
+      {
+        "object": "TrackingDetail",
+        "message": "Pre-Shipment Info Sent to USPS, USPS Awaiting Item",
+        "description": "November 8 Pre-Shipment Info Sent to USPS, USPS Awaiting Item",
+        "status": "pre_transit",
+        "status_detail": "status_update",
+        "datetime": "2022-11-08T00:00:00Z",
+        "source": "USPS",
+        "carrier_code": "MA",
+        "tracking_location": {
+          "object": "TrackingLocation",
+          "city": null,
+          "state": null,
+          "country": null,
+          "zip": null
+        }
+      },
+      {
+        "object": "TrackingDetail",
+        "message": "USPS in possession of item",
+        "description": "November 9 1:45 pm USPS in possession of item in BILLERICA, MA",
+        "status": "in_transit",
+        "status_detail": "arrived_at_facility",
+        "datetime": "2022-11-09T13:45:00Z",
+        "source": "USPS",
+        "carrier_code": "03",
+        "tracking_location": {
+          "object": "TrackingLocation",
+          "city": "BILLERICA",
+          "state": "MA",
+          "country": null,
+          "zip": "01821"
+        }
+      },
+      {
+        "object": "TrackingDetail",
+        "message": "Departed Post Office",
+        "description": "November 9 4:48 pm Departed Post Office in BILLERICA, MA",
+        "status": "in_transit",
+        "status_detail": "departed_facility",
+        "datetime": "2022-11-09T16:48:00Z",
+        "source": "USPS",
+        "carrier_code": "SF",
+        "tracking_location": {
+          "object": "TrackingLocation",
+          "city": "BILLERICA",
+          "state": "MA",
+          "country": null,
+          "zip": "01821"
+        }
+      },
+      {
+        "object": "TrackingDetail",
+        "message": "Arrived at USPS Regional Origin Facility",
+        "description": "November 9 8:09 pm Arrived at USPS Regional Origin Facility in MIDDLESEX-ESSEX MA DISTRIBUTION CENTER",
+        "status": "in_transit",
+        "status_detail": "arrived_at_facility",
+        "datetime": "2022-11-09T20:09:00Z",
+        "source": "USPS",
+        "carrier_code": "10",
+        "tracking_location": {
+          "object": "TrackingLocation",
+          "city": "MIDDLESEX-ESSEX MA DISTRIBUTION CENTER",
+          "state": null,
+          "country": null,
+          "zip": null
+        }
+      },
+      {
+        "object": "TrackingDetail",
+        "message": "Departed USPS Regional Facility",
+        "description": "November 10 2:46 am Departed USPS Regional Facility in MIDDLESEX-ESSEX MA DISTRIBUTION CENTER",
+        "status": "in_transit",
+        "status_detail": "departed_facility",
+        "datetime": "2022-11-10T02:46:00Z",
+        "source": "USPS",
+        "carrier_code": "L1",
+        "tracking_location": {
+          "object": "TrackingLocation",
+          "city": "MIDDLESEX-ESSEX MA DISTRIBUTION CENTER",
+          "state": null,
+          "country": null,
+          "zip": null
+        }
+      },
+      {
+        "object": "TrackingDetail",
+        "message": "Departed USPS Regional Facility",
+        "description": "November 10 4:13 am Departed USPS Regional Facility in MIDDLESEX-ESSEX MA DISTRIBUTION CENTER",
+        "status": "in_transit",
+        "status_detail": "departed_facility",
+        "datetime": "2022-11-10T04:13:00Z",
+        "source": "USPS",
+        "carrier_code": "T1",
+        "tracking_location": {
+          "object": "TrackingLocation",
+          "city": "MIDDLESEX-ESSEX MA DISTRIBUTION CENTER",
+          "state": null,
+          "country": null,
+          "zip": null
+        }
+      },
+      {
+        "object": "TrackingDetail",
+        "message": "Arrived at USPS Facility",
+        "description": "November 10 7:13 am Arrived at USPS Facility in CHICOPEE, MA",
+        "status": "in_transit",
+        "status_detail": "arrived_at_facility",
+        "datetime": "2022-11-10T07:13:00Z",
+        "source": "USPS",
+        "carrier_code": "U1",
+        "tracking_location": {
+          "object": "TrackingLocation",
+          "city": "CHICOPEE",
+          "state": "MA",
+          "country": null,
+          "zip": "01022"
+        }
+      },
+      {
+        "object": "TrackingDetail",
+        "message": "Departed USPS Facility",
+        "description": "November 10 10:19 am Departed USPS Facility in CHICOPEE, MA",
+        "status": "in_transit",
+        "status_detail": "departed_facility",
+        "datetime": "2022-11-10T10:19:00Z",
+        "source": "USPS",
+        "carrier_code": "L1",
+        "tracking_location": {
+          "object": "TrackingLocation",
+          "city": "CHICOPEE",
+          "state": "MA",
+          "country": null,
+          "zip": "01022"
+        }
+      },
+      {
+        "object": "TrackingDetail",
+        "message": "Arrived at USPS Regional Facility",
+        "description": "November 10 4:18 pm Arrived at USPS Regional Facility in SOUTH JERSEY NJ DISTRIBUTION CENTER",
+        "status": "in_transit",
+        "status_detail": "arrived_at_facility",
+        "datetime": "2022-11-10T16:18:00Z",
+        "source": "USPS",
+        "carrier_code": "U1",
+        "tracking_location": {
+          "object": "TrackingLocation",
+          "city": "SOUTH JERSEY NJ DISTRIBUTION CENTER",
+          "state": null,
+          "country": null,
+          "zip": null
+        }
+      },
+      {
+        "object": "TrackingDetail",
+        "message": "Departed USPS Regional Facility",
+        "description": "November 10 10:16 pm Departed USPS Regional Facility in SOUTH JERSEY NJ DISTRIBUTION CENTER",
+        "status": "in_transit",
+        "status_detail": "departed_facility",
+        "datetime": "2022-11-10T22:16:00Z",
+        "source": "USPS",
+        "carrier_code": "EF",
+        "tracking_location": {
+          "object": "TrackingLocation",
+          "city": "SOUTH JERSEY NJ DISTRIBUTION CENTER",
+          "state": null,
+          "country": null,
+          "zip": null
+        }
+      },
+      {
+        "object": "TrackingDetail",
+        "message": "Departed USPS Regional Facility",
+        "description": "November 11 12:21 am Departed USPS Regional Facility in SOUTH JERSEY NJ DISTRIBUTION CENTER",
+        "status": "in_transit",
+        "status_detail": "departed_facility",
+        "datetime": "2022-11-11T00:21:00Z",
+        "source": "USPS",
+        "carrier_code": "L1",
+        "tracking_location": {
+          "object": "TrackingLocation",
+          "city": "SOUTH JERSEY NJ DISTRIBUTION CENTER",
+          "state": null,
+          "country": null,
+          "zip": null
+        }
+      },
+      {
+        "object": "TrackingDetail",
+        "message": "Departed USPS Regional Facility",
+        "description": "November 11 4:00 am Departed USPS Regional Facility in SOUTH JERSEY NJ DISTRIBUTION CENTER",
+        "status": "in_transit",
+        "status_detail": "departed_facility",
+        "datetime": "2022-11-11T04:00:00Z",
+        "source": "USPS",
+        "carrier_code": "T1",
+        "tracking_location": {
+          "object": "TrackingLocation",
+          "city": "SOUTH JERSEY NJ DISTRIBUTION CENTER",
+          "state": null,
+          "country": null,
+          "zip": null
+        }
+      },
+      {
+        "object": "TrackingDetail",
+        "message": "Arrived at USPS Facility",
+        "description": "November 11 4:25 am Arrived at USPS Facility in WILLIAMSTOWN, NJ",
+        "status": "in_transit",
+        "status_detail": "arrived_at_facility",
+        "datetime": "2022-11-11T04:25:00Z",
+        "source": "USPS",
+        "carrier_code": "A1",
+        "tracking_location": {
+          "object": "TrackingLocation",
+          "city": "WILLIAMSTOWN",
+          "state": "NJ",
+          "country": null,
+          "zip": "08094"
+        }
+      }
+    ],
+    "carrier_detail": {
+      "object": "CarrierDetail",
+      "service": "Parcel Select",
+      "container_type": null,
+      "est_delivery_date_local": null,
+      "est_delivery_time_local": null,
+      "origin_location": "BILLERICA MA, 01821",
+      "origin_tracking_location": {
+        "object": "TrackingLocation",
+        "city": "BILLERICA",
+        "state": "MA",
+        "country": null,
+        "zip": "01821"
+      },
+      "destination_location": "GLASSBORO NJ, 08028",
+      "destination_tracking_location": null,
+      "guaranteed_delivery_date": null,
+      "alternate_identifier": null,
+      "initial_delivery_attempt": null
+    },
+    "finalized": false,
+    "is_return": false,
+    "public_url": "https://track.easypost.com/djE6dHJrXzhmZjg2OTQ5NDE5ODRhNTU5M2JkMTk5YWJiMThjNDA5"
+  }
+}
