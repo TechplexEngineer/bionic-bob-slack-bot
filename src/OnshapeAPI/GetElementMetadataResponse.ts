@@ -11,12 +11,12 @@ export interface GetElementMetadataResponse {
 export interface Property {
     computedProperty: boolean
     computedPropertyError: string
-    defaultValue: DefaultValue
+    defaultValue: string | null
     dirty: boolean
     editable: boolean
     editableInUi: boolean
     enumValues: EnumValue[]
-    initialValue: InitialValue
+    initialValue: string | null
     multivalued: boolean
     name: string
     propertyId: string
@@ -25,20 +25,14 @@ export interface Property {
     schemaId: string
     uiHints: UiHints
     validator: Validator
-    value: Value
+    value: string | null
     valueType: string
-}
-
-export interface DefaultValue {
 }
 
 export interface EnumValue {
     label: string
     state: number
     value: string
-}
-
-export interface InitialValue {
 }
 
 export interface UiHints {
@@ -58,8 +52,6 @@ export interface Validator {
     quantityType: number
 }
 
-export interface Value {
-}
 
 export interface Thumbnail {
     href: string

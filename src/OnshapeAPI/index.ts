@@ -231,6 +231,11 @@ export enum DrawingExportType {
     SVG = 'SVG'
 }
 
+export interface PropertyMetadata {
+    propertyId: string,
+    value: string
+}
+
 export default class OnshapeAPI {
     private creds: OnshapeApiCreds;
 
@@ -331,7 +336,7 @@ export default class OnshapeAPI {
      *   headers: headers object
      * }
      */
-    public async get<T>(opts: GetOpts): Promise<T | Response> {
+    public async get<T>(opts: GetOpts): Promise<T> {
         const res = await this.getRaw(opts);
 
         return await res.json<T>();
@@ -379,13 +384,14 @@ export default class OnshapeAPI {
         return await this.get(opts)
     }
 
+
     public async SetPartMetadata(documentId: string,
                                  wvm: WVM,
                                  wvmId: string,
                                  elementId: string,
                                  iden: PartIden,
                                  pid: string,
-                                 properties: { propertyId: string, value: string }[]): Promise<unknown> {
+                                 properties: PropertyMetadata[]): Promise<unknown> {
         const opts: PostOpts = {
             d: documentId,
             e: elementId,
@@ -590,18 +596,32 @@ export default class OnshapeAPI {
                                     wv: WVM.W | WVM.V | WVM.M,
                                     wvmId: string,
                                     elementId: string): Promise<GetElementMetadataResponse> {
-        //	/metadata/d/{did}/{wvm}/{wvmid}/e/{eid}
-
         const opts: GetOpts = {
             d: documentId,
             w: wvmId,
             e: elementId,
             resource: 'metadata',
-            // headers: {
-            //     Accept: 'application/vnd.OnshapeAPI.v1+octet-stream'
-            // },
+
         };
-        return (await this.get(opts as any)) as any;
+        return await this.get(opts);
+    }
+
+    public async SetElementMetadata(documentId: string,
+                                    wv: WVM.W | WVM.V | WVM.M,
+                                    wvmId: string,
+                                    elementId: string,
+                                    properties: PropertyMetadata[]): Promise<any> {
+        const opts: PostOpts = {
+            d: documentId,
+            w: wvmId,
+            e: elementId,
+            resource: 'metadata',
+            body: {
+                properties
+            }
+
+        };
+        return await this.post(opts);
     }
 
     public async GetOutOfDateElements(
