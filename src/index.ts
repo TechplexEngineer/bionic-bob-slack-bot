@@ -3,11 +3,11 @@ import {Router} from 'itty-router';
 
 // routes
 import home from './routes/home'
-import slashEventChannel from './routes/slash_event-channel';
-import slashTrack from './routes/slash_track';
+import slashEventChannel from './routes/slack/slash_event-channel';
+import slashTrack from './routes/slack/slash_track';
 import webhookEasyPost from './routes/webhook_easypost';
-import eventsHandler from './routes/events';
-import interactive from './routes/interactive';
+import eventsHandler from './routes/slack/events';
+import interactive from './routes/slack/interactive';
 import {trackingGet, trackingAddPost, trackingDeletePost} from './routes/web/tracking';
 import webhookOnshape from '@/routes/onshape/webhook'
 

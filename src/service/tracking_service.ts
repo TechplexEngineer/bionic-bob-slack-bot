@@ -1,8 +1,7 @@
 import {EasyPost} from "@/easypost";
 import SlackClient, {SlackAPIMethods} from '@/slack'
 import {EasyPostWebhook} from "@/easypost/WebhookResponse";
-import {EasyPostErrorResponse} from "@/easypost/TrackerCreateResponse";
-import {formatTrackingSlackMessage} from "@/routes/slash_track";
+import {formatTrackingSlackMessage} from "@/routes/slack/slash_track";
 
 export interface constructorProps {
     kv: KVNamespace

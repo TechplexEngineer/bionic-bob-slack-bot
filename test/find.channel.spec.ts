@@ -1,4 +1,4 @@
-import { getChannel, GetUsersFromReactions, parseUrl } from "@/routes/slash_event-channel";
+import {getChannel, GetUsersFromReactions, parseUrl} from "@/routes/slack/slash_event-channel";
 
 const channels = {
     "ok": true,
@@ -19,8 +19,7 @@ const channels = {
             "is_shared": false,
             "is_org_shared": false,
             "is_pending_ext_shared": false,
-            "pending_shared": [
-            ],
+            "pending_shared": [],
             "context_team_id": "T091KQ231",
             "parent_conversation": null,
             "creator": "U091KHP3J",
@@ -28,8 +27,7 @@ const channels = {
             "shared_team_ids": [
                 "T091KQ231"
             ],
-            "pending_connected_team_ids": [
-            ],
+            "pending_connected_team_ids": [],
             "is_member": true,
             "topic": {
                 "value": "Vital Team Communication",
@@ -41,8 +39,7 @@ const channels = {
                 "creator": "U091KHP3J",
                 "last_set": 1439436173
             },
-            "previous_names": [
-            ],
+            "previous_names": [],
             "num_members": 89
         },
         {
@@ -61,8 +58,7 @@ const channels = {
             "is_shared": false,
             "is_org_shared": false,
             "is_pending_ext_shared": false,
-            "pending_shared": [
-            ],
+            "pending_shared": [],
             "context_team_id": "T091KQ231",
             "parent_conversation": null,
             "creator": "U0C57J0D9",
@@ -70,8 +66,7 @@ const channels = {
             "shared_team_ids": [
                 "T091KQ231"
             ],
-            "pending_connected_team_ids": [
-            ],
+            "pending_connected_team_ids": [],
             "is_member": false,
             "topic": {
                 "value": "",
@@ -83,8 +78,7 @@ const channels = {
                 "creator": "U0C57J0D9",
                 "last_set": 1654517980
             },
-            "previous_names": [
-            ],
+            "previous_names": [],
             "num_members": 0
         }
     ],
@@ -126,13 +120,13 @@ describe("parseSlackUrl", () => {
         {
             name: "regular link",
             input: "https://frc4909.slack.com/archives/C091KSAKY/p1654518591157789",
-            output: { channel: "C091KSAKY", timestamp: 1654518591.157789 }
+            output: {channel: "C091KSAKY", timestamp: 1654518591.157789}
         },
         {
             //@todo not sure if this is correct
             name: "thread link",
             input: "https://frc4909.slack.com/archives/GB5PGSV52/p1656621372921909?thread_ts=1656372419.310829&cid=GB5PGSV52",
-            output: { channel: "GB5PGSV52", timestamp: 1656621372.921909 }
+            output: {channel: "GB5PGSV52", timestamp: 1656621372.921909}
         }
     ];
     for (const t of tests) {

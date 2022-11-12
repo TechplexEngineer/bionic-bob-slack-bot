@@ -1,5 +1,5 @@
-import appHomeBlocks from '../app_home_blocks';
-import SlackClient from '../slack'
+import appHomeBlocks from '../../slack/blocks/app_home_blocks';
+import SlackClient from '../../slack'
 
 export interface IncomingCommon {
     type: string

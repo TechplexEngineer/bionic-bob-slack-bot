@@ -1,8 +1,8 @@
 import qs from 'qs';
 import SlackClient from '@/slack'
 
-import Channel_picker_modal, {ErrorModal} from "@/channel_picker_modal";
-import {AddReactionsToChannel, SlackMessage} from "@/routes/slash_event-channel";
+import Channel_picker_modal, {ErrorModal} from "@/slack/blocks/channel_picker_modal";
+import {AddReactionsToChannel, SlackMessage} from "@/routes/slack/slash_event-channel";
 
 export default async (req: Request, env: Bindings) => {
     const reqBody = await req.text()

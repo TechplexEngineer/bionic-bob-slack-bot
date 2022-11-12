@@ -1,6 +1,6 @@
 import qs from 'qs';
 import shlex from 'shlex';
-import SlackClient from '../slack'
+import SlackClient from '../../slack'
 
 const usage = "/event-channel add reactions #2022-summer-heat https://frc4909.slack.com/archives/C091KSAKY/p1654467657881409";
 
