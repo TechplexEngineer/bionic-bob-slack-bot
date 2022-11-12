@@ -47,4 +47,5 @@ router.all("*", () => new Response("404, not found!", {status: 404}));
 
 const worker: ExportedHandler<Bindings> = {fetch: router.handle};
 
+export {Counter} from "@/service/durableCounter";
 export default worker;

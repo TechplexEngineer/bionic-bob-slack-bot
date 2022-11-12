@@ -1,12 +1,16 @@
 name = "bionic-bob"
 main = "dist/index.mjs"
-
-account_id = "1db9917825f95bd7c7e1468383b8e3a4"
-workers_dev = true
-# route = ""
-
 compatibility_date = "2022-05-28"
 compatibility_flags = []
+
+[durable_objects]
+bindings = [
+    { name = "COUNTER", class_name = "Counter" }
+]
+
+[[migrations]]
+tag = "v1"
+new_classes = ["Counter"]
 
 kv_namespaces = [
     { binding = "BIONIC_BOB_TRACKING", id = "7b1c6c43503b4aa78dfba8cf0a18c0ad" }
