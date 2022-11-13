@@ -14,33 +14,6 @@ export interface OnshapeWebhookResponse {
     workspaceId: string;
 }
 
-// Webhook Setup Body
-// {
-//     "documentId": "379504e45fb763e03b5089af",
-//     "events":
-//     [
-//         "onshape.model.lifecycle.changed",
-//         "onshape.model.translation.complete",
-//         "onshape.model.lifecycle.metadata",
-//         "onshape.model.lifecycle.createversion",
-//         "onshape.model.lifecycle.createworkspace",
-//         "onshape.model.lifecycle.createelement",
-//         "onshape.model.lifecycle.deleteelement",
-//         "onshape.document.lifecycle.statechange",
-//         "onshape.model.lifecycle.changed.externalreferences",
-//         "onshape.document.lifecycle.created",
-//         "onshape.revision.created",
-//         "onshape.comment.create",
-//         "onshape.comment.update",
-//         "onshape.comment.delete"
-//     ],
-//     "options":
-//     {
-//         "collapseEvents": true
-//     },
-//     "url": "https://bionic-bob.techplex.workers.dev/webhook/onshape"
-// }
-
 //propertyId for Part Name = 57f3fb8efa3416c06701d60d
 export const PropertyIdName = "57f3fb8efa3416c06701d60d"
 //propertyId for Part Number = 57f3fb8efa3416c06701d60f

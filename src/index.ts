@@ -5,6 +5,7 @@ import {Router} from 'itty-router';
 import home from './routes/home'
 import slashEventChannel from './routes/slack/slash_event-channel';
 import slashTrack from './routes/slack/slash_track';
+import slashNumber from './routes/slack/slash_number';
 import webhookEasyPost from './routes/webhook_easypost';
 import eventsHandler from './routes/slack/events';
 import interactive from './routes/slack/interactive';
@@ -22,6 +23,7 @@ router.post("/events", eventsHandler);
 // slack slash commands
 router.post("/command/event-channel", slashEventChannel);
 router.post("/command/track", slashTrack);
+router.post("/command/number", slashNumber);
 
 //easy post webhook
 router.post("/webhook/track", webhookEasyPost);

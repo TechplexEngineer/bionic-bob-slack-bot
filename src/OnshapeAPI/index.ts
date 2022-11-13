@@ -9,6 +9,7 @@ import type {BTTranslateFormatParams, BTTranslationRequestInfo} from './BTTransl
 import {BTTranslationRequestInfo_State} from './BTTranslationRequestInfo';
 import type {GetBillOfMaterialsOptions} from './GetBillOfMaterialsOptions';
 import {GetElementMetadataResponse} from "@/OnshapeAPI/GetElementMetadataResponse";
+import {BTListResponseBTWebhookInfo} from "@/OnshapeAPI/BTListResponseBTWebhookInfo";
 
 export const byteStringToUint8Array = function (byteString: string): Uint8Array {
     const ui = new Uint8Array(byteString.length);
@@ -89,7 +90,11 @@ export const copyObject = function (object: any) {
 };
 
 export const buildDWMVEPath = function (opts: GetOptionsWVM | PostOptionsWVM): string {
-    let path = '/api/' + opts.resource + '/d/' + opts.d;
+    let path = '/api/v5/' + opts.resource;
+    if ('d' in opts) {
+        path += '/d/' + opts.d;
+    }
+
     if ('w' in opts) {
         path += '/w/' + opts.w;
     } else if ('v' in opts) {
@@ -97,9 +102,11 @@ export const buildDWMVEPath = function (opts: GetOptionsWVM | PostOptionsWVM): s
     } else if ('m' in opts) {
         path += '/m/' + opts.m;
     }
+
     if ('e' in opts) {
         path += '/e/' + opts.e;
     }
+
     if ('subresource' in opts) {
         path += '/' + opts.subresource;
     }
@@ -309,6 +316,7 @@ export default class OnshapeAPI {
         const headers = await this.buildHeaders('GET', path, queryString, inputHeaders);
         if (queryString !== '') queryString = '?' + queryString;
         const requestUrl = baseUrl + path + queryString;
+        console.log(requestUrl);
         if (this.creds.debug) {
             console.log(`GET ${requestUrl}`, headers);
         }
@@ -639,5 +647,42 @@ export default class OnshapeAPI {
             query: options
         };
         return await this.getRaw(opts);
+    }
+
+    public async GetWebhooks(options: { company?: string, user?: string, offset?: number, limit?: number } = {}): Promise<BTListResponseBTWebhookInfo> {
+        const opts: GetOpts = {
+            resource: 'webhooks',
+            query: options as any
+        };
+        return await this.get(opts);
+    }
+
+    public async CreateWebhook() {
+        // Webhook Setup Body
+// {
+//     "documentId": "379504e45fb763e03b5089af",
+//     "events":
+//     [
+//         "onshape.model.lifecycle.changed",
+//         "onshape.model.translation.complete",
+//         "onshape.model.lifecycle.metadata",
+//         "onshape.model.lifecycle.createversion",
+//         "onshape.model.lifecycle.createworkspace",
+//         "onshape.model.lifecycle.createelement",
+//         "onshape.model.lifecycle.deleteelement",
+//         "onshape.document.lifecycle.statechange",
+//         "onshape.model.lifecycle.changed.externalreferences",
+//         "onshape.document.lifecycle.created",
+//         "onshape.revision.created",
+//         "onshape.comment.create",
+//         "onshape.comment.update",
+//         "onshape.comment.delete"
+//     ],
+//     "options":
+//     {
+//         "collapseEvents": true
+//     },
+//     "url": "https://bionic-bob.techplex.workers.dev/webhook/onshape"
+// }
     }
 }
