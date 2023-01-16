@@ -86,7 +86,7 @@ const blocks = [
                     "text": "Open Build Calendar ➚",
                     "emoji": true
                 },
-                "url": "https://docs.google.com/spreadsheets/d/1bPFVPb-jnDz4s6Q-JSQdgSMTSXSyvz-zeSsYXMhwa-Q/edit#gid=0",
+                "url": "https://team4909.org/calendar",
                 "style": "primary"
             }
         ]
@@ -115,6 +115,34 @@ const blocks = [
                     "emoji": true
                 },
                 "url": "https://team4909.monday.com/",
+                "style": "primary"
+            }
+        ]
+    },
+    {
+        "type": "section",
+        "text": {
+            "type": "mrkdwn",
+            "text": "*Trell*\n\n Used to organize hand-off between design to manufacturing.",
+            "verbatim": true
+        },
+        "accessory": {
+            "type": "image",
+            "image_url": "https://docs.team4909.org/images/trello-logo.png",
+            "alt_text": "plane"
+        }
+    },
+    {
+        "type": "actions",
+        "elements": [
+            {
+                "type": "button",
+                "text": {
+                    "type": "plain_text",
+                    "text": "Open Trello ➚",
+                    "emoji": true
+                },
+                "url": "https://trello.com/invite/team4909bionics/ATTIfa132292b74632c5cc038925957c228594F5FB12",
                 "style": "primary"
             }
         ]
