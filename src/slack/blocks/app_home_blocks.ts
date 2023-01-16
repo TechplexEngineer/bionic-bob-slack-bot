@@ -123,7 +123,7 @@ const blocks = [
         "type": "section",
         "text": {
             "type": "mrkdwn",
-            "text": "*Trell*\n\n Used to organize hand-off between design to manufacturing.",
+            "text": "*Trello*\n\n Used to organize hand-off between design to manufacturing.",
             "verbatim": true
         },
         "accessory": {
