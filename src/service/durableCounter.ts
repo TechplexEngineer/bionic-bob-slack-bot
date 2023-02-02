@@ -8,6 +8,10 @@ export interface CounterRequestBody {
     startingNumber: number,
 }
 
+export interface ResetRequestBody {
+    startingNumber: number,
+}
+
 export class Counter implements DurableObject {
     private readonly storageKey = "latestIndex";
 
@@ -57,9 +61,14 @@ export class Counter implements DurableObject {
                     console.log(`Updating PropertyIdTitle3 starting:${startingCount} ending:${count} newParts:${count - startingCount}`);
                     await this.state.storage.put(this.storageKey, count);
                 }
-            })
+            });
+            return new Response("success")
+        }
 
-
+        if (pathname == "/resetCount") {
+            let data = await request.json<ResetRequestBody>()
+            await this.state.storage.put(this.storageKey, data.startingNumber);
+            return new Response("success")
         }
 
         return new Response("")

@@ -3,6 +3,7 @@
 const URLSearchParamsImpl = URLSearchParams;
 import SlackClient, * as api from "@/slack";
 import get from "lodash.get";
+import {jest} from '@jest/globals'
 
 describe("api", () => {
     test("getSlackAPIURL", () => {

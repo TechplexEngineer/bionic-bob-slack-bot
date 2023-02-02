@@ -5,7 +5,8 @@
       "@cloudflare/workers-types",
       "jest",
       "../bindings"
-    ]
+    ],
+    "strict": false
   },
   "include": [
     "../src/**/*",

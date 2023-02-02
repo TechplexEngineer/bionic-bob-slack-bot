@@ -226,6 +226,8 @@ export type PostOpts = PostOptionsWVM
     body: any;
 };
 
+export type DeleteOpts = PostOpts & {}
+
 export enum DrawingExportType {
     INSPECTION_LIST = 'INSPECTION_LIST',
     DRAWING_JSON = 'DRAWING_JSON',
@@ -304,28 +306,7 @@ export default class OnshapeAPI {
 
 
     public async getRaw(opts: GetOpts): Promise<Response> {
-        let path = '';
-        if ('path' in opts) {
-            path = opts.path as any;
-        } else {
-            path = buildDWMVEPath(opts as any);
-        }
-        const baseUrl = 'baseUrl' in opts ? opts.baseUrl : this.creds.baseUrl;
-        const inputHeaders = inputHeadersFromOpts(opts as any);
-        let queryString = buildQueryString(opts as any);
-        const headers = await this.buildHeaders('GET', path, queryString, inputHeaders);
-        if (queryString !== '') queryString = '?' + queryString;
-        const requestUrl = baseUrl + path + queryString;
-        console.log(requestUrl);
-        if (this.creds.debug) {
-            console.log(`GET ${requestUrl}`, headers);
-        }
-        const res = await fetch(requestUrl, {
-            method: 'GET',
-            headers: headers
-        });
-
-        return res;
+        return this.apiRequest(opts, "GET");
     }
 
     /*
@@ -491,13 +472,26 @@ export default class OnshapeAPI {
     }
 
     public async post(opts: PostOpts) {
+        return this.apiRequest(opts, "POST")
+    }
+
+    public async delete(opts: PostOpts) {
+        return this.apiRequest(opts, "DELETE")
+    }
+
+    public async deleteJson(opts: PostOpts) {
+        const res = await this.apiRequest(opts, "DELETE");
+        return await res.json();
+    }
+
+    public async apiRequest(opts: any, method: string) {
         let path = '';
         if ('path' in opts) {
             path = opts.path as any;
         } else {
             path = buildDWMVEPath(opts as any);
         }
-        const method = 'POST';
+        // const method = 'POST';
         const baseUrl = 'baseUrl' in opts ? opts.baseUrl : this.creds.baseUrl;
         const inputHeaders = inputHeadersFromOpts(opts as any);
         let queryString = buildQueryString(opts as any);
@@ -507,12 +501,14 @@ export default class OnshapeAPI {
         if (this.creds.debug) {
             console.log(`${method} ${requestUrl}\n`, headers, '\n', JSON.stringify(opts.body));
         }
-        const res = await fetch(requestUrl, {
+        const requestOpts: RequestInit = {
             method: method,
             headers: headers,
-            body: JSON.stringify(opts.body)
-        });
-        return await res.json();
+        }
+        if (opts.body) {
+            requestOpts.body = JSON.stringify(opts.body)
+        }
+        return await fetch(requestUrl, requestOpts);
     }
 
     public async BlobElement_CreateTranslation(
@@ -657,32 +653,23 @@ export default class OnshapeAPI {
         return await this.get(opts);
     }
 
-    public async CreateWebhook() {
-        // Webhook Setup Body
-// {
-//     "documentId": "379504e45fb763e03b5089af",
-//     "events":
-//     [
-//         "onshape.model.lifecycle.changed",
-//         "onshape.model.translation.complete",
-//         "onshape.model.lifecycle.metadata",
-//         "onshape.model.lifecycle.createversion",
-//         "onshape.model.lifecycle.createworkspace",
-//         "onshape.model.lifecycle.createelement",
-//         "onshape.model.lifecycle.deleteelement",
-//         "onshape.document.lifecycle.statechange",
-//         "onshape.model.lifecycle.changed.externalreferences",
-//         "onshape.document.lifecycle.created",
-//         "onshape.revision.created",
-//         "onshape.comment.create",
-//         "onshape.comment.update",
-//         "onshape.comment.delete"
-//     ],
-//     "options":
-//     {
-//         "collapseEvents": true
-//     },
-//     "url": "https://bionic-bob.techplex.workers.dev/webhook/onshape"
-// }
+    public async CreateWebhook(documentId: string, body: any) {
+
+        const opts: PostOpts = {
+            resource: 'webhooks',
+            body: body
+        };
+        return await this.post(opts);
+    }
+
+    async DeleteWebhook(webhookId: string) {
+
+        const opts: DeleteOpts = {
+            resource: "webhooks",
+            subresource: webhookId,
+            body: ""
+        }
+
+        return await this.deleteJson(opts);
     }
 }

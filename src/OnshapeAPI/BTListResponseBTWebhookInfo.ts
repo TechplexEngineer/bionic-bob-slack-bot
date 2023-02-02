@@ -6,9 +6,10 @@ export type BTListResponseBTWebhookInfo = {
 }
 
 export interface BTWebhookInfo {
+    name: any
+    description: any
     filter: any
     data: any
-    description: any
     companyId: any
     url: string
     createdBy: BTUserSummaryInfo
@@ -17,7 +18,6 @@ export interface BTWebhookInfo {
     folderId: any
     events: Array<string>
     droppedEventCount: number
-    name: any
     id: string
     href: string
 }
