@@ -123,6 +123,18 @@ const blocks = [
             ]
         },
         {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": "*Canva*\n\n Canva is a flexible design tool for print and digital media."
+            },
+            "accessory": {
+                "type": "image",
+                "image_url": "https://docs.team4909.org/images/canva.png",
+                "alt_text": "Canva Logo"
+            }
+        },
+        {
             "type": "actions",
             "elements": [
                 {
