@@ -121,6 +121,31 @@ const blocks = [
                     "style": "primary"
                 }
             ]
+        },
+        {
+            "type": "actions",
+            "elements": [
+                {
+                    "type": "button",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "Canva Team Join ➚",
+                        "emoji": true
+                    },
+                    "url": "https://www.canva.com/brand/join?token=rMSOBEAxDYw0KxI8wLByjQ&brandingVariant=edu&referrer=team-invite",
+                    "style": "primary"
+                },
+                {
+                    "type": "button",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "Shared Canva Folder ➚",
+                        "emoji": true
+                    },
+                    "url": "https://www.canva.com/folder/FAFOjWxLvTo",
+                    "style": "primary"
+                }
+            ]
         }
     ];
 export default {
