@@ -99,7 +99,7 @@ const blocks = [
             "type": "section",
             "text": {
                 "type": "mrkdwn",
-                "text": "*Order Sheet*\n\n We use a lot of parts and tools during the build season. We use this spreadsheet to track items to order and our order history."
+                "text": "*Order Sheet*\n\n We use a lot of parts and tools during the build season. We use the order sheet spreadsheet to track items to order and our order history."
             },
             "accessory": {
                 "type": "image",

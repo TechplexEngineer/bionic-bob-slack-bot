@@ -24,7 +24,7 @@ export interface bionicBobTrackingKV {
     url?: string
 }
 
-const SlackTrackingChannelId = "C0326RUSSKB";
+export const SlackTrackingChannelId = "C0326RUSSKB";
 
 export class TrackingService {
 

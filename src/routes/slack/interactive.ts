@@ -2,7 +2,8 @@ import qs from 'qs';
 import SlackClient from '@/slack'
 
 import Channel_picker_modal, {ErrorModal} from "@/slack/blocks/channel_picker_modal";
-import {AddReactionsToChannel, SlackMessage} from "@/routes/slack/slash_event-channel";
+import {AddReactionsToChannel, GetUsersFromReactions, SlackMessage} from "@/routes/slack/slash_event-channel";
+import { SlackTrackingChannelId } from '@/service/tracking_service';
 
 export default async (req: Request, env: Bindings) => {
     const reqBody = await req.text()
@@ -70,6 +71,25 @@ export default async (req: Request, env: Bindings) => {
                     view: JSON.stringify(clone)
                 });
                 return new Response();
+            }
+            if (p.callback_id == "msg_reactions") {
+                let reactions = await Slack.reactions.get({
+                    channel: p.channel.id,
+                    timestamp: p.message_ts
+                });
+                const userWhoReacted = GetUsersFromReactions(reactions.message.reactions);
+                const usersNames = [];
+                for (const userId of userWhoReacted) {
+                    const u = await Slack.users.info({ user: userId });
+                    usersNames.push(u.user.profile.display_name || u.user.profile.real_name);
+                }
+
+                const msg = usersNames.join(`\n`)
+
+                const res = await Slack.chat.postMessage({ channel: SlackTrackingChannelId, text: msg })
+                if (!res.ok) {
+                    console.log(`Error sending slack message responding to easypost webhook. ${res.error}`)
+                }
 
 
             }
