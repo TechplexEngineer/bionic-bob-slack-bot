@@ -81,15 +81,15 @@ export default async (req: Request, env: Bindings) => {
                 const usersNames = [];
                 for (const userId of userWhoReacted) {
                     const u = await Slack.users.info({ user: userId });
-                    usersNames.push(`dis: ${u.user.profile.display_name}\treal: ${u.user.profile.real_name}`);
+                    usersNames.push(u.user.profile.real_name);
                 }
 
-                const msg = usersNames.join(`\n`)
+                const msg = usersNames.sort().join(`\n`)
 
-                const res = await Slack.chat.postMessage({ channel: SlackTrackingChannelId, text: msg })
-                if (!res.ok) {
-                    console.log(`Error sending slack message responding to easypost webhook. ${res.error}`)
-                }
+                // const res = await Slack.chat.postMessage({ channel: p. , text: msg })
+                // if (!res.ok) {
+                //     console.log(`Error sending slack message responding to easypost webhook. ${res.error}`)
+                // }
                 return new Response(); //success response
 
             }
