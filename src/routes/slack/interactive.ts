@@ -81,7 +81,7 @@ export default async (req: Request, env: Bindings) => {
                 const usersNames = [];
                 for (const userId of userWhoReacted) {
                     const u = await Slack.users.info({ user: userId });
-                    usersNames.push(u.user.profile.display_name || u.user.profile.real_name);
+                    usersNames.push(`dis: ${u.user.profile.display_name}\treal: ${u.user.profile.real_name}`);
                 }
 
                 const msg = usersNames.join(`\n`)
