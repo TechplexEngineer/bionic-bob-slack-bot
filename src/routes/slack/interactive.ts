@@ -90,7 +90,7 @@ export default async (req: Request, env: Bindings) => {
                 if (!res.ok) {
                     console.log(`Error sending slack message responding to easypost webhook. ${res.error}`)
                 }
-
+                return new Response(); //success response
 
             }
     }
