@@ -44,11 +44,11 @@ const blocks = [
                 "text": "*Trello*\n\n Used to organize hand-off between design to manufacturing.",
                 "verbatim": true
             },
-            "accessory": {
-                "type": "image",
-                "image_url": "https://docs.team4909.org/images/trello-logo.png",
-                "alt_text": "plane"
-            }
+            // "accessory": {
+            //     "type": "image",
+            //     "image_url": "https://docs.team4909.org/images/trello-logo.png",
+            //     "alt_text": "plane"
+            // }
         },
         {
             "type": "actions",
@@ -101,11 +101,11 @@ const blocks = [
                 "type": "mrkdwn",
                 "text": "*Order Sheet*\n\n We use a lot of parts and tools during the build season. We use the order sheet spreadsheet to track items to order and our order history."
             },
-            "accessory": {
-                "type": "image",
-                "image_url": "https://docs.team4909.org/images/google-sheets.png",
-                "alt_text": "Order Sheet"
-            }
+            // "accessory": {
+            //     "type": "image",
+            //     "image_url": "https://docs.team4909.org/images/google-sheets.png",
+            //     "alt_text": "Order Sheet"
+            // }
         },
         {
             "type": "actions",
@@ -128,11 +128,11 @@ const blocks = [
                 "type": "mrkdwn",
                 "text": "*Canva*\n\n Canva is a flexible design tool for print and digital media."
             },
-            "accessory": {
-                "type": "image",
-                "image_url": "https://docs.team4909.org/images/canva.png",
-                "alt_text": "Canva Logo"
-            }
+            // "accessory": {
+            //     "type": "image",
+            //     "image_url": "https://docs.team4909.org/images/canva.png",
+            //     "alt_text": "Canva Logo"
+            // }
         },
         {
             "type": "actions",
