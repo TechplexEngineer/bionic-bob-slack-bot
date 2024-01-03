@@ -160,6 +160,9 @@ const blocks = [
             ]
         },
         {
+            "type": "divider"
+        },
+        {
             "type": "actions",
             "elements": [
                 {
