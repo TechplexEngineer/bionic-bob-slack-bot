@@ -120,7 +120,7 @@ export default async (req: Request, env: Bindings) => {
                     usersNames.push(u.user.profile.real_name);
                 }
 
-                const msg = usersNames.sort().join(`\n`)
+                const msg = `Responsses to "${p.message.text}":\n${usersNames.sort().join(`\n`) || "No responses yet"}`
 
                 const res = await Slack.chat.postMessage({ channel: p.user.id, text: msg })
                 if (!res.ok) {

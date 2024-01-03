@@ -16,11 +16,11 @@ const blocks = [
                 "type": "mrkdwn",
                 "text": "*Bionics Docs*\n\n Bionics docs is team team's core documentation site with information about our tools and processes."
             },
-            "accessory": {
-                "type": "image",
-                "image_url": "https://docs.team4909.org/images/bionics-docs-logo.png",
-                "alt_text": "Bionics Docs Logo"
-            }
+            // "accessory": {
+            //     "type": "image",
+            //     "image_url": "https://docs.team4909.org/images/bionics-docs-logo.png",
+            //     "alt_text": "Bionics Docs Logo"
+            // }
         },
         {
             "type": "actions",
@@ -33,7 +33,7 @@ const blocks = [
                         "emoji": true
                     },
                     "url": "https://docs.team4909.org/home/",
-                    "style": "primary"
+                    // "style": "primary"
                 }
             ]
         },
@@ -61,7 +61,7 @@ const blocks = [
                         "emoji": true
                     },
                     "url": "https://trello.com/invite/team4909bionics/ATTIfa132292b74632c5cc038925957c228594F5FB12",
-                    "style": "primary"
+                    // "style": "primary"
                 },
                 {
                     "type": "button",
@@ -71,7 +71,7 @@ const blocks = [
                         "emoji": true
                     },
                     "url": "https://trello.com/b/OGUJmSaG/design-to-manufacturing",
-                    "style": "primary"
+                    // "style": "primary"
                 },
                 {
                     "type": "button",
@@ -81,7 +81,7 @@ const blocks = [
                         "emoji": true
                     },
                     "url": "https://trello.com/b/kIldmPwM/operations",
-                    "style": "primary"
+                    // "style": "primary"
                 },
                 {
                     "type": "button",
@@ -91,7 +91,7 @@ const blocks = [
                         "emoji": true
                     },
                     "url": "https://trello.com/b/e2LD6Dta/robot",
-                    "style": "primary"
+                    // "style": "primary"
                 }
             ]
         },
@@ -118,7 +118,7 @@ const blocks = [
                         "emoji": true
                     },
                     "url": "https://docs.google.com/spreadsheets/d/1BGMXljo7L7N766PpeVszUuOC9rf_mTWG5kIJSzcwGbo/edit#gid=1432125071",
-                    "style": "primary"
+                    // "style": "primary"
                 }
             ]
         },
@@ -145,7 +145,7 @@ const blocks = [
                         "emoji": true
                     },
                     "url": "https://www.canva.com/brand/join?token=rMSOBEAxDYw0KxI8wLByjQ&brandingVariant=edu&referrer=team-invite",
-                    "style": "primary"
+                    // "style": "primary"
                 },
                 {
                     "type": "button",
@@ -155,7 +155,22 @@ const blocks = [
                         "emoji": true
                     },
                     "url": "https://www.canva.com/folder/FAFOjWxLvTo",
-                    "style": "primary"
+                    // "style": "primary"
+                }
+            ]
+        },
+        {
+            "type": "actions",
+            "elements": [
+                {
+                    "type": "button",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "Meal Train ➚",
+                        "emoji": true
+                    },
+                    "url": "https://www.mealtrain.com/trains/3m55w",
+                    // "style": "primary"
                 }
             ]
         }
