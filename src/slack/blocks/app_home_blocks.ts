@@ -41,7 +41,7 @@ const blocks = [
             "type": "section",
             "text": {
                 "type": "mrkdwn",
-                "text": "*Trello*\n\n Used to organize hand-off between design to manufacturing.",
+                "text": "*Trello*\n\n Used to organize ourselves and keep track of work.",
                 "verbatim": true
             },
             // "accessory": {
@@ -67,10 +67,10 @@ const blocks = [
                     "type": "button",
                     "text": {
                         "type": "plain_text",
-                        "text": "Manufacturing ➚",
+                        "text": "Software ➚",
                         "emoji": true
                     },
-                    "url": "https://trello.com/b/OGUJmSaG/design-to-manufacturing",
+                    "url": "https://trello.com/b/KkO4oId1/software",
                     // "style": "primary"
                 },
                 {
