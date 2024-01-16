@@ -29,7 +29,7 @@ const blocks = [
                     "type": "button",
                     "text": {
                         "type": "plain_text",
-                        "text": "Open Bionics Docs ➚",
+                        "text": "Bionics Docs ➚",
                         "emoji": true
                     },
                     "url": "https://docs.team4909.org/home/",
@@ -155,7 +155,7 @@ const blocks = [
                     "type": "button",
                     "text": {
                         "type": "plain_text",
-                        "text": "Open Order Sheet ➚",
+                        "text": "Order Sheet ➚",
                         "emoji": true
                     },
                     "url": "https://docs.google.com/spreadsheets/d/1BGMXljo7L7N766PpeVszUuOC9rf_mTWG5kIJSzcwGbo/edit#gid=1432125071",
