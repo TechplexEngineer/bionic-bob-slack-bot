@@ -92,7 +92,48 @@ const blocks = [
                     },
                     "url": "https://trello.com/b/e2LD6Dta/robot",
                     // "style": "primary"
+                },
+                {
+                    "type": "button",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "Climber ➚",
+                        "emoji": true
+                    },
+                    "url": "https://trello.com/b/QOTvMOUu/climber",
+                    // "style": "primary"
+                },
+                {
+                    "type": "button",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "Shooter ➚",
+                        "emoji": true
+                    },
+                    "url": "https://trello.com/b/HrgYcUQR/shooter",
+                    // "style": "primary"
+                },
+                {
+                    "type": "button",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "Arm ➚",
+                        "emoji": true
+                    },
+                    "url": "https://trello.com/b/ZoraMaCR/arm",
+                    // "style": "primary"
+                },
+                {
+                    "type": "button",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "Intake ➚",
+                        "emoji": true
+                    },
+                    "url": "https://trello.com/b/WBSaLo8l/intake",
+                    // "style": "primary"
                 }
+
             ]
         },
         {
