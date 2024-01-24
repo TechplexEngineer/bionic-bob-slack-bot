@@ -67,6 +67,7 @@ const genStatusIndicator = (status: string): string => {
             return `:large_green_circle::heavy_minus_sign::large_green_circle::heavy_minus_sign::large_green_circle::heavy_minus_sign::package:`;
         default:
             return `:radio_button::heavy_minus_sign::radio_button::heavy_minus_sign::radio_button::heavy_minus_sign::radio_button:`;
+    }
 };
 
 
