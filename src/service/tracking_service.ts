@@ -2,6 +2,7 @@ import {EasyPost} from "@/easypost";
 import SlackClient, {SlackAPIMethods} from '@/slack'
 import {EasyPostWebhook} from "@/easypost/WebhookResponse";
 import {formatTrackingSlackMessage} from "@/routes/slack/slash_track";
+import { isEqual as _isEqual } from "lodash";
 
 export interface constructorProps {
     kv: KVNamespace
@@ -22,6 +23,7 @@ export interface bionicBobTrackingKV {
     estDeliveryDate?: string
     status?: string
     url?: string
+    lastUpdate?: string
 }
 
 export const SlackTrackingChannelId = "C0326RUSSKB";
@@ -45,6 +47,7 @@ export class TrackingService {
         const status = r.result.status;
         const estDeliveryDate = r.result.est_delivery_date;
         const trackingUrl = r.result.public_url;
+        const latestUpdate = r.result.tracking_details.pop()
 
         const kvEntry = await this.kv.getWithMetadata<bionicBobTrackingKV>(trackingCode);
         if (kvEntry.metadata == null) {
@@ -59,16 +62,21 @@ export class TrackingService {
         const data: bionicBobTrackingKV = Object.assign(kvEntry.metadata, {
             status: status,
             estDeliveryDate: estDeliveryDate,
-            url: trackingUrl
+            url: trackingUrl,
+            lastUpdate: latestUpdate.description
         } as bionicBobTrackingKV);
+
+        if (_isEqual(data, kvEntry.metadata)) {
+            return; // nothing to do got a redundant webhook
+        }
 
         await this.kv.put(trackingCode, JSON.stringify(data), {metadata: data})
 
-        const latestUpdate = r.result.tracking_details.pop()
+        
 
-        const msg = '*Tracking Update*\n' + formatTrackingSlackMessage(data) + `\n\t${latestUpdate.description}`;
+        const blocks = formatTrackingSlackMessage(data);
 
-        const res = await this.slack.chat.postMessage({channel: SlackTrackingChannelId, text: msg})
+        const res = await this.slack.chat.postMessage({ channel: SlackTrackingChannelId, blocks})
         if (!res.ok) {
             console.log(`Error sending slack message responding to easypost webhook. ${res.error}`)
         }

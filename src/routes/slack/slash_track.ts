@@ -23,9 +23,51 @@ export const formatTrackingSlackMessage = (t: bionicBobTrackingKV) => {
     } else {
         deliveryDate = "Unknown"
     }
+    const blocks = {
+        "blocks": [
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": `*${t.name}*\n ${genStatusIndicator(t.status)} ${t.status}\n Estimated Delivery: ${deliveryDate}\n Last Update: ${t.lastUpdate}`
+                }
+            },
+            {
+                "type": "actions",
+                "elements": [
+                    {
+                        "type": "button",
+                        "text": {
+                            "type": "plain_text",
+                            "text": `Track`, // ${t.carrier} ${t.tracking}
+                            "emoji": true
+                        },
+                        "url": t.url
+                    }
+                ]
+            }
+        ]
+    }
 
-    return `• *${t.name}* Status: ${t.status} - Estimated delivery: ${deliveryDate} - <${t.url}|${t.tracking}>`
+    return JSON.stringify(blocks);
+        
+    
+    // `• *${t.name}* Status: ${t.status} - Estimated delivery: ${deliveryDate} - <${t.url}|${t.tracking}>`
 }
+
+const genStatusIndicator = (status: string): string => {
+    switch(status) {
+        case "pre_transit":
+            return `:large_green_circle::heavy_minus_sign::radio_button::heavy_minus_sign::radio_button::heavy_minus_sign::radio_button:`;
+        case "in_transit":
+            return `:large_green_circle::heavy_minus_sign::truck::heavy_minus_sign::radio_button::heavy_minus_sign::radio_button:`;
+        case "out_for_delivery":
+            return `:large_green_circle::heavy_minus_sign::large_green_circle::heavy_minus_sign::truck::heavy_minus_sign::radio_button:`;
+        case "delivered":
+            return `:large_green_circle::heavy_minus_sign::large_green_circle::heavy_minus_sign::large_green_circle::heavy_minus_sign::package:`;
+        default:
+            return `:radio_button::heavy_minus_sign::radio_button::heavy_minus_sign::radio_button::heavy_minus_sign::radio_button:`;
+};
 
 
 const handleListTrackers = async (ts: TrackingService) => {
