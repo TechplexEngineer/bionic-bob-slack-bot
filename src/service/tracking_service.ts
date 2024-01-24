@@ -69,6 +69,10 @@ export class TrackingService {
 
         if (_isEqual(data, kvEntry.metadata)) {
             console.log(`No change in tracking data for ${trackingCode}`);
+            console.log('data', data);
+            console.log('kvEntry.metadata', kvEntry.metadata);
+            
+            
             
             return; // nothing to do got a redundant webhook
         }
