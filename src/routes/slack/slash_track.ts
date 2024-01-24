@@ -23,8 +23,7 @@ export const formatTrackingSlackMessage = (t: bionicBobTrackingKV) => {
     } else {
         deliveryDate = "Unknown"
     }
-    const blocks = {
-        "blocks": [
+    const blocks = [
             {
                 "type": "section",
                 "text": {
@@ -47,7 +46,7 @@ export const formatTrackingSlackMessage = (t: bionicBobTrackingKV) => {
                 ]
             }
         ]
-    }
+    
 
     return JSON.stringify(blocks);
         

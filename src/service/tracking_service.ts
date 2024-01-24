@@ -85,7 +85,7 @@ export class TrackingService {
         console.log('blocks', blocks);
         
 
-        const res = await this.slack.chat.postMessage({ channel: SlackTrackingChannelId, blocks: JSON.parse(blocks)})
+        const res = await this.slack.chat.postMessage({ channel: SlackTrackingChannelId, blocks: blocks})
         if (!res.ok) {
             console.log(`Error sending slack message responding to easypost webhook. ${res.error}`)
         }
