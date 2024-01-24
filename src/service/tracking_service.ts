@@ -60,7 +60,7 @@ export class TrackingService {
             return
         }
 
-        const data: bionicBobTrackingKV = Object.assign(kvEntry.metadata, {
+        const data: bionicBobTrackingKV = Object.assign({}, kvEntry.metadata, {
             status: status,
             estDeliveryDate: estDeliveryDate,
             url: trackingUrl,
