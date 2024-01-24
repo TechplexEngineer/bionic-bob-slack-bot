@@ -56,6 +56,7 @@ export class TrackingService {
         }
 
         if (kvEntry.metadata.isDeleted) {
+            console.log(`Tracker for ${trackingCode} is deleted`);
             return
         }
 
@@ -67,7 +68,7 @@ export class TrackingService {
         } as bionicBobTrackingKV);
 
         if (_isEqual(data, kvEntry.metadata)) {
-            console.log('No change in tracking data.');
+            console.log(`No change in tracking data for ${trackingCode}`);
             
             return; // nothing to do got a redundant webhook
         }
