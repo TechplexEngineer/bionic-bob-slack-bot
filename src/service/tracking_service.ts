@@ -67,6 +67,8 @@ export class TrackingService {
         } as bionicBobTrackingKV);
 
         if (_isEqual(data, kvEntry.metadata)) {
+            console.log('No change in tracking data.');
+            
             return; // nothing to do got a redundant webhook
         }
 
