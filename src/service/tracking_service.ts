@@ -69,7 +69,7 @@ export class TrackingService {
             status: status,
             estDeliveryDate: estDeliveryDate,
             url: trackingUrl,
-            lastUpdate: latestUpdate.description
+            lastUpdate: lastUpdate
         } as bionicBobTrackingKV);
 
         if (_isEqual(data, kvEntry.metadata)) {
