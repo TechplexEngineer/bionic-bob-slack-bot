@@ -60,6 +60,11 @@ export class TrackingService {
             return
         }
 
+        let lastUpdate = latestUpdate.description;
+        if (latestUpdate.tracking_location.city) {
+            lastUpdate += ` - ${latestUpdate.tracking_location.city}, ${latestUpdate.tracking_location.state}`
+        }
+
         const data: bionicBobTrackingKV = Object.assign({}, kvEntry.metadata, {
             status: status,
             estDeliveryDate: estDeliveryDate,
