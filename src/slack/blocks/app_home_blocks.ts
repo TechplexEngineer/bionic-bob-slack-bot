@@ -197,7 +197,17 @@ const blocks = [
                 },
                 "url": "https://www.canva.com/folder/FAFOjWxLvTo",
                 // "style": "primary"
-            }
+            },
+            
+            {
+                "type": "button",
+                "text": {
+                    "type": "plain_text",
+                    "text": "Figma Invite Link ➚",
+                    "emoji": true
+                },
+                "url": "https://www.figma.com/team_invite/redeem/gKzDc61jmavGLUOVi904mw",
+            },
         ]
     },
     {
