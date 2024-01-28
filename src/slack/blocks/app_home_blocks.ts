@@ -248,9 +248,27 @@ const blocks = [
             }
             
         ]
+    },
+    {
+        "type": "divider"
+    },
+    {
+        "type": "actions",
+        "elements": [
+            {
+                "type": "button",
+                "text": {
+                    "type": "plain_text",
+                    "text": "2024 Robot CAD ➚",
+                    "emoji": true
+                },
+                "url": "https://cad.onshape.com/documents/4069d756073e717f7704b605/w/082d380f5c9127b59d6761e3/e/be575de25e8307955e9af027",
+                // "style": "primary"
+            },
+            
+
+        ]
     }
-
-
 ];
 export default {
     type: 'home',
