@@ -2,6 +2,7 @@ import {EasyPost} from "@/easypost";
 import SlackClient, {SlackAPIMethods} from '@/slack'
 import {EasyPostWebhook} from "@/easypost/WebhookResponse";
 import {formatTrackingSlackMessage} from "@/routes/slack/slash_track";
+import { isEqual as _isEqual } from "lodash";
 
 export interface constructorProps {
     kv: KVNamespace
@@ -22,9 +23,10 @@ export interface bionicBobTrackingKV {
     estDeliveryDate?: string
     status?: string
     url?: string
+    lastUpdate?: string
 }
 
-const SlackTrackingChannelId = "C0326RUSSKB";
+export const SlackTrackingChannelId = "C0326RUSSKB";
 
 export class TrackingService {
 
@@ -45,6 +47,7 @@ export class TrackingService {
         const status = r.result.status;
         const estDeliveryDate = r.result.est_delivery_date;
         const trackingUrl = r.result.public_url;
+        const latestUpdate = r.result.tracking_details.pop()
 
         const kvEntry = await this.kv.getWithMetadata<bionicBobTrackingKV>(trackingCode);
         if (kvEntry.metadata == null) {
@@ -53,22 +56,41 @@ export class TrackingService {
         }
 
         if (kvEntry.metadata.isDeleted) {
+            console.log(`Tracker for ${trackingCode} is deleted`);
             return
         }
 
-        const data: bionicBobTrackingKV = Object.assign(kvEntry.metadata, {
+        let lastUpdate = latestUpdate.description;
+        if (latestUpdate.tracking_location.city) {
+            lastUpdate += ` - ${latestUpdate.tracking_location.city}, ${latestUpdate.tracking_location.state}`
+        }
+
+        const data: bionicBobTrackingKV = Object.assign({}, kvEntry.metadata, {
             status: status,
             estDeliveryDate: estDeliveryDate,
-            url: trackingUrl
+            url: trackingUrl,
+            lastUpdate: lastUpdate
         } as bionicBobTrackingKV);
+
+        if (_isEqual(data, kvEntry.metadata)) {
+            console.log(`No change in tracking data for ${trackingCode}`);
+            console.log('data', data);
+            console.log('kvEntry.metadata', kvEntry.metadata);
+            
+            
+            
+            return; // nothing to do got a redundant webhook
+        }
 
         await this.kv.put(trackingCode, JSON.stringify(data), {metadata: data})
 
-        const latestUpdate = r.result.tracking_details.pop()
+        
 
-        const msg = '*Tracking Update*\n' + formatTrackingSlackMessage(data) + `\n\t${latestUpdate.description}`;
+        const blocks = formatTrackingSlackMessage(data);
+        console.log('blocks', blocks);
+        
 
-        const res = await this.slack.chat.postMessage({channel: SlackTrackingChannelId, text: msg})
+        const res = await this.slack.chat.postMessage({ channel: SlackTrackingChannelId, blocks: blocks})
         if (!res.ok) {
             console.log(`Error sending slack message responding to easypost webhook. ${res.error}`)
         }

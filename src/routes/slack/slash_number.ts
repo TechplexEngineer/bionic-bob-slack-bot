@@ -67,7 +67,7 @@ export default async (request: Request, env: Bindings) => {
         }
         await Onshape.CreateWebhook(documentId, {
             "documentId": documentId,
-            "description": `Webhook for https://cad.onshape.com/documents/${documentId}`,
+            "description": `Automatic Part Numbering Webhook for https://cad.onshape.com/documents/${documentId}`,
             // name was not persisted
             "data": JSON.stringify({
                 documentId
